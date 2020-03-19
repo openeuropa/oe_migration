@@ -59,8 +59,10 @@ class OeMigrationViewsCommands extends DrushCommands {
    * @param array $options
    *   Additional options for the command.
    *
-   * @option group A comma-separated list of migration groups to list
+   * @option group Comma-separated list of migration groups to list
    * @option tag Name of the migration tag to list
+   * @option continue-on-failure When a migration fails requirements checks,
+   *   continue processing remaining migrations.
    *
    * @default $options []
    *
@@ -76,8 +78,10 @@ class OeMigrationViewsCommands extends DrushCommands {
   public function generate($migration_names = '', array $options = [
     'group' => self::REQ,
     'tag' => self::REQ,
+    'continue-on-failure' => FALSE,
   ]) {
-    $options += ['group' => NULL, 'tag' => NULL];
+    $options['group'] = $options['group'] ?? '';
+    $options['tag'] = $options['tag'] ?? '';
     $migrations = $this->migrationsList($migration_names, $options);
 
     // Take it one group at a time, listing the migrations within each group.
@@ -109,6 +113,11 @@ class OeMigrationViewsCommands extends DrushCommands {
       return;
     }
 
+    // Ensure the map table exists.
+    $id_map = $migration->getIdMap();
+    $id_map->getDatabase();
+
+    // Exit if the view already exists.
     if ($view_storage->load($migration->id())) {
       $this->logger()
         ->warning(dt('Skipped %migration_id view creation: The view already exists', ['%migration_id' => $migration->id()]));
@@ -117,9 +126,9 @@ class OeMigrationViewsCommands extends DrushCommands {
 
     // Create the view.
     $view = $this->createMigrationView($group, $migration);
-    $view_executable = $view->getExecutable();
 
     // Validate the view.
+    $view_executable = $view->getExecutable();
     $errors = $view_executable->validate();
     if (!empty($errors)) {
       $this->logger()->error(dt('Failed %migration_id view creation:', ['%migration_id' => $migration->id()]));
@@ -226,6 +235,13 @@ class OeMigrationViewsCommands extends DrushCommands {
 
     // Add migrate messages field.
     $view_executable->addHandler('default', 'field', $map_table, 'migrate_messages');
+
+    // Add no result behavior.
+    $view_executable->addHandler('default', 'empty', 'views', 'area_text_custom', [
+      'empty' => TRUE,
+      'content' => '<h2>No data at the moment, come back later</h2>',
+      'plugin_id' => 'text_custom',
+    ]);
 
     return $view;
   }
