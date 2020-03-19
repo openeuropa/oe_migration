@@ -251,7 +251,7 @@ class OeMigrationViewsCommands extends DrushCommands {
    *   Drop source_data, destination_data columns from migrate_map_articles
    *   and migrate_map_pages tables.
    *
-   * @command oe_migration_views-cleanup-map-tables
+   * @command oe_migration_views:cleanup-map-tables
    *
    * @aliases oe_migration_views-cleanup-map-tables, oe_migration_views-cleanup
    *

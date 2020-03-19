@@ -28,9 +28,9 @@ Several Drush 9 compatible commands are provided:
     Once a View with the same machine name than a migration exists, a `View details` link will be available
     in the `List migration` UI (admin/structure/migrate/manage/your_group/migrations)
 
-- `oe_migration_views-cleanup-map-tables`
+- `oe_migration_views:cleanup-map-tables`
 
-    Drops source_data and destination_data columns from the given migrate_map table(s).
+    Removes `source_data` and `destination_data` columns from the given migrate_map table(s).
 
 ## Important note
 
