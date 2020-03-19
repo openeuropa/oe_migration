@@ -1,0 +1,9 @@
+name: OE Migration Views
+description: 'Integrates Migrate and Views.'
+package: OpenEuropa Migration
+type: module
+core: 8.x
+dependencies:
+  - drupal:migrate
+  - migrate_plus:migrate_plus
+  - migrate_tools:migrate_tools

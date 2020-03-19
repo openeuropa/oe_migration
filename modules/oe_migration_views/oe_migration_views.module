@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Migrate Views module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function oe_migration_views_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $migration */
+  $migration = &$entity_types['migration'];
+  $migration->setHandlerClass('list_builder', 'Drupal\oe_migration_views\OeMigrationViewsMigrationListBuilder');
+}
+
+/**
+ * Returns an associative array of possible migrate map source row statuses.
+ */
+function _oe_migration_views_migrate_map_source_row_status_options() {
+  return [
+    MigrateIdMapInterface::STATUS_IMPORTED => t('Imported'),
+    MigrateIdMapInterface::STATUS_NEEDS_UPDATE => t('Needs update'),
+    MigrateIdMapInterface::STATUS_IGNORED => t('Ignored'),
+    MigrateIdMapInterface::STATUS_FAILED => t('Failed'),
+  ];
+}
+
+/**
+ * Returns an associative array of possible migrate message levels.
+ */
+function _oe_migration_views_migrate_message_level_options() {
+  return [
+    MigrationInterface::MESSAGE_ERROR => t('Error'),
+    MigrationInterface::MESSAGE_WARNING => t('Warning'),
+    MigrationInterface::MESSAGE_NOTICE => t('Notice'),
+    MigrationInterface::MESSAGE_INFORMATIONAL => t('Info'),
+  ];
+}
