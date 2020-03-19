@@ -76,7 +76,6 @@ class OeMigrationViewsCommands extends DrushCommands {
   public function generate($migration_names = '', array $options = [
     'group' => self::REQ,
     'tag' => self::REQ,
-    'update' => FALSE,
   ]) {
     $options += ['group' => NULL, 'tag' => NULL];
     $migrations = $this->migrationsList($migration_names, $options);
