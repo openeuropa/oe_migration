@@ -13,12 +13,12 @@ use Drupal\migrate\Event\MigrateMapSaveEvent;
 /**
  * Defines the sql based ID map implementation.
  *
- * It creates one map and one message table per migration entity to store the
- * relevant information.
+ * Extends \Drupal\migrate\Plugin\migrate\id_map\Sql and adds 2 additional
+ * columns: "source_data" and "destination_data".
  *
- * @PluginID("oe_migration_views_sql")
+ * @PluginID("oe_migration_views_sql_data")
  */
-class OeMigrationViewsSql extends Sql {
+class SqlData extends Sql {
 
   /**
    * {@inheritdoc}

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_migration_views\Commands;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\oe_migration_views\Plugin\migrate\id_map\OeMigrationViewsSql;
+use Drupal\oe_migration_views\Plugin\migrate\id_map\SqlData;
 use Drupal\oe_migration_views\Traits\MigrateToolsCommandsTrait;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
 use Drupal\migrate\Plugin\migrate\id_map\Sql;
@@ -199,7 +199,7 @@ class OeMigrationViewsCommands extends DrushCommands {
       ]);
     }
 
-    if (is_a($id_map, OeMigrationViewsSql::class)) {
+    if (is_a($id_map, SqlData::class)) {
       $source_plugin = $migration->getSourcePlugin();
       $source_fields = $source_plugin->fields();
       foreach ($source_fields as $key => $label) {

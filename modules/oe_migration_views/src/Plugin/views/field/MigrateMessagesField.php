@@ -12,7 +12,7 @@ use Drupal\views\ResultRow;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("migrate_messages")
+ * @ViewsField("oe_migration_views_migrate_messages")
  */
 class MigrateMessagesField extends FieldPluginBase {
 

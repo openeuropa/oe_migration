@@ -16,7 +16,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 function oe_migration_views_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $migration */
   $migration = &$entity_types['migration'];
-  $migration->setHandlerClass('list_builder', 'Drupal\oe_migration_views\OeMigrationViewsMigrationListBuilder');
+  $migration->setHandlerClass('list_builder', 'Drupal\oe_migration_views\MigrationListBuilder');
 }
 
 /**

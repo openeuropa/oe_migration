@@ -9,7 +9,7 @@ use Drupal\views\Plugin\views\filter\InOperator;
 /**
  * Defines a filter handler for migrate message level.
  *
- * @ViewsFilter("migrate_message_level")
+ * @ViewsFilter("oe_migration_views_migrate_message_level")
  */
 class MigrateMessageLevelFilter extends InOperator {
 

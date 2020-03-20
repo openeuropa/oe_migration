@@ -7,7 +7,7 @@
 
 declare(strict_types = 1);
 
-use Drupal\oe_migration_views\Plugin\migrate\id_map\OeMigrationViewsSql;
+use Drupal\oe_migration_views\Plugin\migrate\id_map\SqlData;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
 use Drupal\migrate\Plugin\migrate\id_map\Sql;
 use Drupal\migrate\Plugin\Migration;
@@ -31,8 +31,8 @@ function oe_migration_views_views_data_alter(&$data) {
     _oe_migration_views_views_data_alter_migrate_map_definitions($data, $migration);
 
     // Add source_data and destination_data fields to migrate map tables for
-    // the "oe_migration_views_sql" id_map plugin.
-    _oe_migration_views_views_data_alter_migrate_map_oe_migration_views_sql_definitions($data, $migration);
+    // the "oe_migration_views_sql_data" id_map plugin.
+    _oe_migration_views_views_data_alter_migrate_map_oe_migration_views_sql_data_definitions($data, $migration);
 
     // Define relationships from migrate map tables to entity tables.
     _oe_migration_views_views_data_alter_migrate_map_relationship_definitions($data, $migration);
@@ -124,10 +124,10 @@ function _oe_migration_views_views_data_alter_migrate_map_definitions(array &$da
     'title' => 'Source row status',
     'help' => 'Source row status',
     'field' => [
-      'id' => 'migrate_map_source_row_status',
+      'id' => 'oe_migration_views_migrate_map_source_row_status',
     ],
     'filter' => [
-      'id' => 'migrate_map_source_row_status',
+      'id' => 'oe_migration_views_migrate_map_source_row_status',
     ],
     'argument' => [
       'id' => 'numeric',
@@ -200,7 +200,7 @@ function _oe_migration_views_views_data_alter_migrate_map_definitions(array &$da
     'title' => t('Migrate messages'),
     'help' => t('Returns all migrate messages for this migrate_map entry.'),
     'field' => [
-      'id' => 'migrate_messages',
+      'id' => 'oe_migration_views_migrate_messages',
       'real field' => 'source_ids_hash',
       'message_table' => $id_map->messageTableName(),
     ],
@@ -216,9 +216,9 @@ function _oe_migration_views_views_data_alter_migrate_map_definitions(array &$da
  * @param \Drupal\migrate\Plugin\Migration $migration
  *   The migration plugin used to build the migrate map declaration.
  */
-function _oe_migration_views_views_data_alter_migrate_map_oe_migration_views_sql_definitions(array &$data, Migration $migration) {
+function _oe_migration_views_views_data_alter_migrate_map_oe_migration_views_sql_data_definitions(array &$data, Migration $migration) {
   $id_map = $migration->getIdMap();
-  if (!is_a($id_map, OeMigrationViewsSql::class)) {
+  if (!is_a($id_map, SqlData::class)) {
     return;
   }
 
@@ -419,10 +419,10 @@ function _oe_migration_views_views_data_alter_migrate_message_definitions(array 
     'title' => 'Message level',
     'help' => 'Message level',
     'field' => [
-      'id' => 'migrate_message_level',
+      'id' => 'oe_migration_views_migrate_message_level',
     ],
     'argument' => [
-      'id' => 'migrate_message_level',
+      'id' => 'oe_migration_views_migrate_message_level',
     ],
     'filter' => [
       'id' => 'string',
@@ -436,10 +436,10 @@ function _oe_migration_views_views_data_alter_migrate_message_definitions(array 
     'title' => 'Source row status',
     'help' => 'Source row status',
     'field' => [
-      'id' => 'migrate_map_source_row_status',
+      'id' => 'oe_migration_views_migrate_map_source_row_status',
     ],
     'filter' => [
-      'id' => 'migrate_map_source_row_status',
+      'id' => 'oe_migration_views_migrate_map_source_row_status',
     ],
     'argument' => [
       'id' => 'numeric',

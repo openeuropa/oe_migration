@@ -12,7 +12,7 @@ use Drupal\views\ResultRow;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("migrate_map_source_row_status")
+ * @ViewsField("oe_migration_views_migrate_map_source_row_status")
  */
 class MigrateMapSourceRowStatusField extends FieldPluginBase {
 

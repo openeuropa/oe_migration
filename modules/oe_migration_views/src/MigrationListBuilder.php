@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration_views;
 
-use Drupal\migrate_tools\Controller\MigrationListBuilder;
+use Drupal\migrate_tools\Controller\MigrationListBuilder as MigrateToolsMigrationListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 
 /**
- * Class OeMigrationViewsMigrationListBuilder.
+ * Class MigrationListBuilder.
  *
  * @package Drupal\oe_migration_views
  */
-class OeMigrationViewsMigrationListBuilder extends MigrationListBuilder {
+class MigrationListBuilder extends MigrateToolsMigrationListBuilder {
 
   /**
    * {@inheritdoc}
