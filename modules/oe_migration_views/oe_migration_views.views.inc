@@ -188,6 +188,7 @@ function _oe_migration_views_views_data_alter_migrate_map_definitions(array &$da
     ],
     'relationship' => [
       'title' => t('Migrate messages'),
+      'label' => t('Migrate messages'),
       'help' => t('Migrate messages logged.'),
       'base' => $id_map->messageTableName(),
       'base field' => 'source_ids_hash',
@@ -307,6 +308,7 @@ function _oe_migration_views_views_data_alter_migrate_map_relationship_definitio
         'title' => t('Relate each migrate mapping with a @entity_label entity', ['@entity_label' => $entity_type->getLabel()]),
         'help' => t('Relate this migrate map table to an entity table.'),
         'relationship' => [
+          'label' => t('@entity_label entity', ['@entity_label' => $entity_type->getLabel()]),
           'id' => 'standard',
           'entity_type' => $entity_type_id,
           'base' => $base_table,
@@ -337,9 +339,10 @@ function _oe_migration_views_views_data_alter_entity_migrate_map_definitions(arr
       $id_field = $entity_type->getKey('id');
       $data[$base_table]['migrate_map_' . $map_table] = [
         'real field' => $id_field,
-        'title' => t('Migration map @map_table', ['@map_table' => $map_table]),
+        'title' => t('Migrate map @map_table', ['@map_table' => $map_table]),
         'help' => t('Relate this entity to a migration map table.'),
         'relationship' => [
+          'label' => t('Migrate map @map_table', ['@map_table' => $map_table]),
           'id' => 'standard',
           'base' => $map_table,
           'base field' => 'destid1',
@@ -404,6 +407,7 @@ function _oe_migration_views_views_data_alter_migrate_message_definitions(array 
     ],
     'relationship' => [
       'title' => t('Migrate map'),
+      'label' => t('Migrate map'),
       'help' => t('Migrate map entry.'),
       'base' => $id_map->mapTableName(),
       'base field' => 'source_ids_hash',
