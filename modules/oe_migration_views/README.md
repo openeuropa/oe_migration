@@ -52,3 +52,4 @@ Several Drush 9 compatible commands are provided:
 - `oe_migration_views:cleanup-map-tables`
 
     Removes `source_data` and `destination_data` columns from the given migrate_map table(s).
+    Useful if you want to keep the migrate_map tables after a migration without the data columns (to save space).
