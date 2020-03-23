@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\oe_migration_views\Functional;
 
 use Drupal\Core\Site\Settings;
