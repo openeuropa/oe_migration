@@ -9,6 +9,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Modify migrate_tools routes permissions.
+ *
+ * Allows access to some migrations routes to users with the
+ * "view migrate reports" permission.
  */
 class RouteSubscriber extends RouteSubscriberBase {
 

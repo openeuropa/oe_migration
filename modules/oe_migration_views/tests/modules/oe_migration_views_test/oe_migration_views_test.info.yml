@@ -1,0 +1,7 @@
+name: OE Migration Views Test
+description: 'Test module to test OE Migration Views.'
+package: Testing
+type: module
+core: 8.x
+dependencies:
+  - oe_migration:oe_migration_views

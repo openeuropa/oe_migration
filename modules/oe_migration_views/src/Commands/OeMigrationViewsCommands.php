@@ -83,6 +83,9 @@ class OeMigrationViewsCommands extends DrushCommands {
     $options['group'] = $options['group'] ?? '';
     $options['tag'] = $options['tag'] ?? '';
     $migrations = $this->migrationsList($migration_names, $options);
+    if (empty($migrations)) {
+      $this->logger->error(dt('No migration(s) found.'));
+    }
 
     // Take it one group at a time, listing the migrations within each group.
     foreach ($migrations as $group_id => $migration_list) {
@@ -102,12 +105,13 @@ class OeMigrationViewsCommands extends DrushCommands {
    */
   protected function generateMigrationView(MigrationGroup $group, MigrationInterface $migration) {
     $view_storage = $this->entityTypeManager->getStorage('view');
+    $view_id = $group->id() . '_' . $migration->id();
 
     $id_map = $migration->getIdMap();
     if (!is_a($id_map, Sql::class)) {
       $this->logger()
-        ->warning(dt('Skipped %migration_id view creation: The id map is not of type %type', [
-          '%migration_id' => $migration->id(),
+        ->warning(dt('Skipped %view_id view creation: The id map is not of type %type', [
+          '%view_id' => $view_id,
           '%type' => '\Drupal\migrate\Plugin\migrate\id_map\Sql',
         ]));
       return;
@@ -118,9 +122,9 @@ class OeMigrationViewsCommands extends DrushCommands {
     $id_map->getDatabase();
 
     // Exit if the view already exists.
-    if ($view_storage->load($migration->id())) {
+    if ($view_storage->load($view_id)) {
       $this->logger()
-        ->warning(dt('Skipped %migration_id view creation: The view already exists', ['%migration_id' => $migration->id()]));
+        ->warning(dt('Skipped %view_id view creation: The view already exists.', ['%view_id' => $view_id]));
       return;
     }
 
@@ -131,7 +135,7 @@ class OeMigrationViewsCommands extends DrushCommands {
     $view_executable = $view->getExecutable();
     $errors = $view_executable->validate();
     if (!empty($errors)) {
-      $this->logger()->error(dt('Failed %migration_id view creation:', ['%migration_id' => $migration->id()]));
+      $this->logger()->error(dt('Failed %view_id view creation:', ['%view_id' => $view_id]));
 
       foreach ($errors as $display_errors) {
         foreach ($display_errors as $error) {
@@ -144,7 +148,7 @@ class OeMigrationViewsCommands extends DrushCommands {
     // Save the view.
     $view->save();
     $this->logger()
-      ->success(dt('Created %migration_id migrate report view.', ['%migration_id' => $migration->id()]));
+      ->success(dt('Created %view_id migrate report view.', ['%view_id' => $view_id]));
   }
 
   /**
@@ -157,8 +161,9 @@ class OeMigrationViewsCommands extends DrushCommands {
     $id_map = $migration->getIdMap();
 
     /** @var \Drupal\views\Entity\View $view */
+    $view_id = $group->id() . '_' . $migration->id();
     $view = $view_storage->create([
-      'id' => $migration->id(),
+      'id' => $view_id,
       'label' => $group_name . ' - ' . $migration->label(),
       'base_table' => $id_map->mapTableName(),
     ]);
@@ -249,6 +254,9 @@ class OeMigrationViewsCommands extends DrushCommands {
   /**
    * Drop source_data and destination_data columns from migrate_map table(s).
    *
+   * Useful if you want to keep the migrate_map tables after a migration without
+   * the data columns (to save space).
+   *
    * @param array $options
    *   An array of options.
    *
@@ -257,28 +265,25 @@ class OeMigrationViewsCommands extends DrushCommands {
    * @option all
    *   Perform operation on all migrate_map table(s).
    *
-   * @usage oe_migration_views-cleanup-map-tables --all
+   * @usage oe_migration_views:cleanup-map-tables
    *   Drop source_data, destination_data columns from all migrate_map table(s).
-   * @usage oe_migration_views-cleanup-map-tables --tables="migrate_map_articles"
+   * @usage oe_migration_views:cleanup-map-tables --tables="migrate_map_articles"
    *   Drop source_data, destination_data columns from migrate_map_articles
    *   table.
-   * @usage oe_migration_views-cleanup-map-tables --tables="migrate_map_articles, migrate_map_pages"
+   * @usage oe_migration_views:cleanup-map-tables --tables="migrate_map_articles, migrate_map_pages"
    *   Drop source_data, destination_data columns from migrate_map_articles
    *   and migrate_map_pages tables.
    *
    * @command oe_migration_views:cleanup-map-tables
    *
-   * @aliases oe_migration_views-cleanup-map-tables, oe_migration_views-cleanup
+   * @aliases oe_migration_views-cleanup-map-tables, oe_migration_views:cleanup, oe_migration_views-cleanup
    *
    * @throws \Drush\Exceptions\UserAbortException
    */
-  public function cleanup(array $options = ['tables' => '', 'all' => FALSE]) {
+  public function cleanup(array $options = ['tables' => '']) {
     $database_schema = \Drupal::database()->schema();
 
-    if ($options['all']) {
-      $tables = $database_schema->findTables('migrate_map_%');
-    }
-    else {
+    if (!empty($options['tables'])) {
       $tables = [];
       $input = StringUtils::csvToArray($options['tables']);
       foreach ($input as $table) {
@@ -287,9 +292,12 @@ class OeMigrationViewsCommands extends DrushCommands {
         }
       }
     }
+    else {
+      $tables = $database_schema->findTables('migrate_map_%');
+    }
 
     if (empty($tables)) {
-      throw new \Exception(dt('No table(s) found.'));
+      $this->logger()->error(dt('No table(s) found.'));
     }
 
     if (!$this->io()->confirm(dt('Cleanup will be performed on the following table(s): @tables', ['@tables' => implode(', ', $tables)]))) {
@@ -300,8 +308,8 @@ class OeMigrationViewsCommands extends DrushCommands {
       foreach (['source_data', 'destination_data'] as $column) {
         if ($database_schema->fieldExists($table, $column)) {
           $database_schema->dropField($table, $column);
-          $this->logger()->success(dt('Removed @column column from @table', [
-            'column' => $column,
+          $this->logger()->success(dt('Removed @column column from @table.', [
+            '@column' => $column,
             '@table' => $table,
           ]));
         }

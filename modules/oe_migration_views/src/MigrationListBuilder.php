@@ -36,10 +36,13 @@ class MigrationListBuilder extends MigrateToolsMigrationListBuilder {
     $operations = parent::getDefaultOperations($entity);
 
     // View details.
-    // The view ID must be the same as the migration ID, and the display ID must
-    // be "page_1".
-    // @todo Improve this relationship.
-    $route = Url::fromRoute("view.{$entity->id()}.page_1");
+    // The view ID must be "groupID_migrationID" migration ID, and the display
+    // ID must be "page_1".
+    // @todo Improve this relationship?
+    $migration_group = $entity->get('migration_group') ?? 'default';
+    $migration_id = $entity->id();
+    $view_id = $migration_group . '_' . $migration_id;
+    $route = Url::fromRoute("view.$view_id.page_1");
     if ($route->access()) {
       $operations['view-details'] = [
         'title' => $this->t('View details'),
