@@ -134,6 +134,18 @@ class DrushCommandsTest extends BrowserTestBase {
       ],
     ], $display_options['relationships']);
 
+    // Check no result behavior.
+    $this->assertArraySubset([
+      'area_text_custom' => [
+        'id' => 'area_text_custom',
+        'table' => 'views',
+        'field' => 'area_text_custom',
+        'empty' => TRUE,
+        'content' => '<h2>No data at the moment, come back later</h2>',
+        'plugin_id' => 'text_custom',
+      ],
+    ], $display_options['empty']);
+
     // Check page display path.
     $page_1 = $view->getDisplay('page_1');
     $this->assertEqual($page_1['display_options']['path'], 'admin/structure/migrate/manage/default/migrations/fruit_terms/reports');
