@@ -1,6 +1,6 @@
-# OpenEuropa oe_migration
+# OpenEuropa Migration
 
-The OpenEuropa oe_migration provides extensions to the core migration framework, to migrate data from Drupal 7 to the OpenEuropa project.
+The OpenEuropa Migration provides extensions to the core migration framework, to migrate data from Drupal 7 to the OpenEuropa project.
 
 ## Development setup
 
