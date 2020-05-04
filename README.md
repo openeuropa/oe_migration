@@ -2,6 +2,10 @@
 
 The OpenEuropa Migration provides extensions to the core migration framework, to migrate data from Drupal 7 to the OpenEuropa project.
 
+### Process plugins
+
+* **ApplyFilters (oe_migration_apply_filters)** : Applies filters of the given filter format to a string.
+
 ## Development setup
 
 You can build the development site by running the following steps:
