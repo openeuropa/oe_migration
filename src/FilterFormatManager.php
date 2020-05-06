@@ -47,7 +47,7 @@ class FilterFormatManager {
   /**
    * The filterFormatStorage setter.
    */
-  protected function setFilterFormatStorage(): void {
+  public function setFilterFormatStorage(): void {
     try {
       $this->filterFormatStorage = $this->entityTypeManager->getStorage('filter_format');
     }
@@ -79,7 +79,8 @@ class FilterFormatManager {
    *   The list of filter id's for a given filter format or an empty list.
    */
   public function getFilterIds(FilterFormat $filter_format): array {
-    return is_array($filter_format->filters()->getInstanceIds()) ? array_keys($filter_format->filters()->getInstanceIds()) : [];
+    $ids = $filter_format->filters()->getInstanceIds();
+    return is_array($ids) && !empty($ids) ? array_keys($ids) : [];
   }
 
   /**
@@ -114,7 +115,9 @@ class FilterFormatManager {
       return NULL;
     }
     foreach ($filters as $filter) {
-      if ($filter->status !== TRUE) {
+      $configuration = $filter->getConfiguration();
+      $status = is_array($configuration) && array_key_exists('status', $configuration) ? $configuration['status'] : FALSE;
+      if ($status !== TRUE) {
         $filters->removeInstanceId($filter->getPluginId());
       }
     }
@@ -136,14 +139,15 @@ class FilterFormatManager {
     /** @var array $html_restrictions */
     $html_restrictions = $filter_format->getHtmlRestrictions();
     /** @var string[] $allowed_tags */
-    $allowed_tags = is_array($html_restrictions) && !empty($html_restrictions) ? array_keys($html_restrictions['allowed']) : [];
-    asort($allowed_tags);
+    $allowed_tags = is_array($html_restrictions) && array_key_exists('allowed', $html_restrictions) ? array_keys($html_restrictions['allowed']) : [];
 
     return $allowed_tags;
   }
 
   /**
    * Verifies if a tag is among the allowed HTML tags for a given filter format.
+   *
+   * The verification is case-insensitive.
    *
    * @param string $tag
    *   The tag to verify.
@@ -154,7 +158,9 @@ class FilterFormatManager {
    *   The result of the verification operation.
    */
   public function isAllowedTag(string $tag, FilterFormat $filter_format): bool {
-    return in_array(strtolower($tag), $this->getAllowedTags($filter_format));
+    /** @var array $allowed_tags */
+    $allowed_tags = array_map('strtolower', $this->getAllowedTags($filter_format));
+    return in_array(strtolower($tag), $allowed_tags);
   }
 
 }
