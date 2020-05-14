@@ -218,7 +218,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     $configuration['filter_format'] = 'filter_format_id';
     $configuration['filters_to_skip'] = ['valid_filter_id'];
     $this->initializePlugin($configuration);
-    // This expects ensure that the function removeInstanceId is called with the
+    // Ensure that the function removeInstanceId is called with the
     // valid_filter_id param. The 'remove' action cannot be testing without
     // implement login in the mock filterPluginCollection mock.
     $this->filterPluginCollection
