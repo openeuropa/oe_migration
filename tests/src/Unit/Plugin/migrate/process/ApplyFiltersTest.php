@@ -109,48 +109,67 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     $valid_filter = new Row(['name' => 'valid_filter_id'], $this->sourcePluginIds, TRUE);
     $this->row = $valid_filter;
 
-    // Language Manager Mock.
+    // Mock a Language object.
     $languageMock = $this->createMock(LanguageInterface::class);
+
+    // Mock the Language getId() method.
     $languageMock->expects($this->any())
       ->method('getId')
       ->willReturn('en');
 
+    // Mock a LanguageManager object.
     $this->languageManager = $this->createMock(LanguageManagerInterface::class);
+
+    // Mock the LanguageManager getDefaultLanguage() method.
     $this->languageManager->expects($this->any())
       ->method('getDefaultLanguage')
       ->willReturn($languageMock);
 
-    // Filter and Filter format mocks. The other are necessary classes to
-    // perform the different actions.
+    // Mock a FilterProcessResult object.
     $filterProcessResult = $this->createMock(FilterProcessResult::class);
+
+    // Mock the FilterProcessResult getProcessedText() method.
     $filterProcessResult->expects($this->any())
       ->method('getProcessedText')
       ->willReturn('processed text');
 
+    // Mock a Filter object.
     $this->filter = $this->createMock(FilterInterface::class);
+
+    // Mock the FilterInterface process() method.
     $this->filter->expects($this->any())
       ->method('process')
       ->with('unprocessed text', 'en')
       ->willReturn($filterProcessResult);
+
+    // Mock the Filter inherited getPluginId() method.
     $this->filter->expects($this->any())
       ->method('getPluginId')
       ->willReturn('valid_filter_id');
 
+    // Mock a FilterPluginCollection object.
     $this->filterPluginCollection = $this->createMock(FilterPluginCollection::class);
     $this->filterPluginCollection->expects($this->any())
       ->method('count')
       ->willReturn(1);
+
+    // Mock the FilterPluginCollection inherited getIterator() method.
     $this->filterPluginCollection->expects($this->any())
       ->method('getIterator')
       ->withConsecutive()
       ->willReturn(new \ArrayObject([$this->filter]));
 
+    // Mock a FilterFormat object.
     $this->filterFormat = $this->getMockBuilder(FilterFormatInterface::class)
       ->disableOriginalConstructor()
       ->getMock();
+
+    // Mock the FilterFormat inherited id() method.
     $this->filterFormat->expects($this->any())
       ->method('id')
       ->willReturn('filter_format_id');
+
+    // Mock the FilterFormat filters() method.
     $this->filterFormat->expects($this->any())
       ->method('filters')
       ->willReturn($this->filterPluginCollection);
@@ -193,7 +212,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Test that the filters_to_apply param works as expected.
+   * Test that the "filters_to_apply" configuration key works as expected.
    *
    * @throws \Drupal\migrate\MigrateException
    */
@@ -209,7 +228,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Test that the filters_to_skip param works as expected.
+   * Test that the "filters_to_skip" configuration key works as expected.
    *
    * @throws \Drupal\migrate\MigrateException
    */
@@ -219,7 +238,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     $configuration['filters_to_skip'] = ['valid_filter_id'];
     $this->initializePlugin($configuration);
     // Ensure that the function removeInstanceId is called with the
-    // valid_filter_id param. The 'remove' action cannot be testing without
+    // valid_filter_id parameter. The 'remove' action cannot be testing without
     // implement login in the mock filterPluginCollection mock.
     $this->filterPluginCollection
       ->expects($this->once())
@@ -230,7 +249,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Test filters_to_skip and filters_to_apply configuration parameters.
+   * Test filters_to_skip and filters_to_apply configuration keys.
    *
    * @throws \Drupal\migrate\MigrateException
    */
@@ -243,7 +262,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     $this->initializePlugin($configuration);
 
     // Ensure that the removeInstanceId() method is never invoked. This means
-    // that the configuration filters_to_skip is ignored as expected.
+    // that the configuration key "filters_to_skip" is ignored as expected.
     $this->filterPluginCollection
       ->expects($this->any())
       ->method('removeInstanceId');

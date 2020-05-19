@@ -20,10 +20,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Applies filters of the given filter format to a string.
  *
  * Available configuration keys:
- *   - filter_format (mandatory): The filter format id of the destination field,
- *     eg. full_html. If the destination filter format id is declared after the
+ *   - filter_format (mandatory): The filter format ID of the destination field,
+ *     eg. full_html. If the destination filter format ID is declared after the
  *     field value or if a YAML variable is used to store the field's value, the
- *     dynamic detection of the destination field's filter format id won't be
+ *     dynamic detection of the destination field's filter format ID won't be
  *     possible.
  *   - filters_to_apply (optional): A list of filter IDs to apply, eg.
  *     filter_autop, filter_html, etc.
@@ -243,10 +243,10 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Returns the destination language id.
+   * Returns the destination language ID.
    *
    * @return string
-   *   The destination language id or the site's default language id.
+   *   The destination language ID or the site's default language ID.
    */
   protected function getLangcode(): string {
     return $this->row->getDestinationProperty('langcode') ?? $this->languageManager->getDefaultLanguage()->getId();

@@ -15,10 +15,10 @@ use Drupal\filter\FilterPluginCollection;
 interface FilterFormatManagerInterface {
 
   /**
-   * Returns a filter format by its id.
+   * Returns a filter format by its ID.
    *
    * @param string $id
-   *   The filter format id.
+   *   The filter format ID.
    *
    * @return \Drupal\filter\FilterFormatInterface|null
    *   The filter format object. NULL if no matching filter format is found.
@@ -37,15 +37,15 @@ interface FilterFormatManagerInterface {
   public function getFilterIds(FilterFormatInterface $filter_format): array;
 
   /**
-   * Verifies whether a filter id is valid for a given filter format or not.
+   * Verifies whether a filter ID is valid for a given filter format or not.
    *
    * @param string $filter_id
-   *   The filter id.
+   *   The filter ID.
    * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format.
    *
    * @return bool
-   *   The answer to whether a filter id is valid for the given filter format or
+   *   The answer to whether a filter ID is valid for the given filter format or
    *   not.
    */
   public function isFilterIdValid(string $filter_id, FilterFormatInterface $filter_format): bool;

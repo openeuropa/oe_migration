@@ -141,7 +141,7 @@ class FilterFormatManagerTest extends UnitTestCase {
   /**
    * Test the getFilterFormat method.
    *
-   * Create a valid and a non valid filter format id and verify that:
+   * Create a valid and a non valid filter format ID and verify that:
    * - getting a valid filter format works.
    * - getting NULL when trying to get a non valid filter format works.
    */
@@ -159,7 +159,7 @@ class FilterFormatManagerTest extends UnitTestCase {
    * Test the getFilterIds method.
    *
    * Create three filters and verify that:
-   * - getting a list of valid filter ids from a valid FilterPluginCollection
+   * - getting a list of valid filter IDs from a valid FilterPluginCollection
    *   works.
    * - getting an empty array from an empty FilterPluginCollection works.
    * - getting an empty array if the FilterPluginCollection is NULL works.
@@ -172,16 +172,16 @@ class FilterFormatManagerTest extends UnitTestCase {
       ->method('getInstanceIds')
       ->will($this->onConsecutiveCalls($this->filters, [], NULL));
 
-    // Try to get a list of valid filter format ids from a valid
+    // Try to get a list of valid filter format IDs from a valid
     // FilterPluginCollection. The expected return value is a list of three
     // strings, 'filter_1', 'filter_2' and 'filter_3'.
     $this->assertEquals(['filter_1', 'filter_2', 'filter_3'], $this->filterFormatManager->getFilterIds($this->filterFormat));
 
-    // Try to get a list of valid filter format ids from an empty
+    // Try to get a list of valid filter format IDs from an empty
     // FilterPluginCollection. The expected return value is an empty array.
     $this->assertEmpty($this->filterFormatManager->getFilterIds($this->filterFormat));
 
-    // Try to get a list of valid filter format ids from a non existing
+    // Try to get a list of valid filter format IDs from a non existing
     // FilterPluginCollection. The expected return value is an empty array.
     $this->assertEmpty($this->filterFormatManager->getFilterIds($this->filterFormat));
   }
@@ -190,8 +190,8 @@ class FilterFormatManagerTest extends UnitTestCase {
    * Test the isFilterIdValid method.
    *
    * Create three filters and verify that:
-   * - the validation of a valid filter id works.
-   * - the non validation of a non valid filter id works.
+   * - the validation of a valid filter ID works.
+   * - the non validation of a non valid filter ID works.
    */
   public function testIsFilterIdValid() {
     // Mock the FilterPluginCollection getInstanceIds().
@@ -199,10 +199,10 @@ class FilterFormatManagerTest extends UnitTestCase {
       ->method('getInstanceIds')
       ->willReturn($this->filters);
 
-    // Test the validation of a filter id. The expected return value is TRUE.
+    // Test the validation of a filter ID. The expected return value is TRUE.
     $this->assertTrue($this->filterFormatManager->isFilterIdValid('filter_1', $this->filterFormat));
 
-    // Test the non validation of a non existing filter id. The expected return
+    // Test the non validation of a non existing filter ID. The expected return
     // value is FALSE.
     $this->assertFalse($this->filterFormatManager->isFilterIdValid('filter_1000', $this->filterFormat));
   }
