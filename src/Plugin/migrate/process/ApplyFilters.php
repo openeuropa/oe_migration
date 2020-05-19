@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     field value or if a YAML variable is used to store the field's value, the
  *     dynamic detection of the destination field's filter format id won't be
  *     possible.
- *   - filters_to_apply (optional): A list of filter id's to apply, eg.
+ *   - filters_to_apply (optional): A list of filter IDs to apply, eg.
  *     filter_autop, filter_html, etc.
  *     If this list is empty, all enabled filters for the given filter format
  *     will be applied.
@@ -33,7 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     filters for the given filter format will be applied instead of those
  *     defined by the web site's configuration, no matter if they are enabled or
  *     not.
- *   - filters_to_skip (optional): A list of filter id's to skip, eg.
+ *   - filters_to_skip (optional): A list of filter IDs to skip, eg.
  *     htmlcorrector.
  *     If the "filters_to_apply" key is not declared, all enabled filters for
  *     the given filter format will be applied except of those declared in the

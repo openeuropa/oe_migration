@@ -59,7 +59,7 @@ class FilterFormatManagerTest extends UnitTestCase {
    *
    * @var array[]
    */
-  protected $allowed_tags = [
+  protected $allowedTags = [
     'allowed' => [
       'allowed_tag_1' => [
         'attribute_1' => TRUE,
@@ -68,7 +68,7 @@ class FilterFormatManagerTest extends UnitTestCase {
       ],
       'allowed_tag_2' => FALSE,
       'allowed_tag_3' => FALSE,
-    ]
+    ],
   ];
 
   /**
@@ -123,9 +123,13 @@ class FilterFormatManagerTest extends UnitTestCase {
     $this->filterPluginCollection->expects($this->any())
       ->method('getIterator')
       ->withConsecutive()
-      ->willReturn(new \ArrayObject([$this->filters['filter_1'], $this->filters['filter_2'], $this->filters['filter_3']]));
+      ->willReturn(new \ArrayObject([
+        $this->filters['filter_1'],
+        $this->filters['filter_2'],
+        $this->filters['filter_3'],
+      ]));
 
-    // Mock the FilterFormat filters() method
+    // Mock the FilterFormat filters() method.
     $this->filterFormat->expects($this->any())
       ->method('filters')
       ->willReturn($this->filterPluginCollection);
@@ -354,11 +358,11 @@ class FilterFormatManagerTest extends UnitTestCase {
     // empty array and (4) NULL.
     $this->filterFormat->expects($this->any())
       ->method('getHtmlRestrictions')
-      ->will($this->onConsecutiveCalls($this->allowed_tags, $no_allowed_key, [], NULL));
+      ->will($this->onConsecutiveCalls($this->allowedTags, $no_allowed_key, [], NULL));
 
     // $html_restrictions is an array and the "allowed" key exists. The method
     // is expected to return an array containing the three keys.
-    $this->assertEquals(['allowed_tag_1', 'allowed_tag_2', 'allowed_tag_3',], $this->filterFormatManager->getAllowedTags($this->filterFormat));
+    $this->assertEquals(['allowed_tag_1', 'allowed_tag_2', 'allowed_tag_3'], $this->filterFormatManager->getAllowedTags($this->filterFormat));
 
     // $html_restrictions is an array and the "allowed" key doesn't exist. The
     // method is expected to return an empty array.
@@ -388,7 +392,7 @@ class FilterFormatManagerTest extends UnitTestCase {
     // returns FALSE. Please, refer to the previous test, testGetAllowedTags().
     $this->filterFormat->expects($this->any())
       ->method('getHtmlRestrictions')
-      ->willReturn($this->allowed_tags);
+      ->willReturn($this->allowedTags);
 
     // The tested tag is an allowed tag. The expected return value is TRUE.
     $this->assertTrue($this->filterFormatManager->isAllowedTag('allowed_tag_1', $this->filterFormat));

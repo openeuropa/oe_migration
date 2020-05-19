@@ -70,13 +70,13 @@ class FilterFormatManager {
   }
 
   /**
-   * Returns a list of filter id's for a given filter format.
+   * Returns a list of filter IDs for a given filter format.
    *
    * @param \Drupal\filter\Entity\FilterFormat $filter_format
    *   The filter format object.
    *
    * @return array
-   *   The list of filter id's for a given filter format or an empty list.
+   *   The list of filter IDs for a given filter format or an empty list.
    */
   public function getFilterIds(FilterFormat $filter_format): array {
     $ids = $filter_format->filters()->getInstanceIds();
