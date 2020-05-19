@@ -33,6 +33,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     filters for the given filter format will be applied instead of those
  *     defined by the web site's configuration, no matter if they are enabled or
  *     not.
+ *     Filters will be applied in the order they are set in the site's filter
+ *     format configuration, depending on their weight.
  *   - filters_to_skip (optional): A list of filter IDs to skip, eg.
  *     htmlcorrector.
  *     If the "filters_to_apply" key is not declared, all enabled filters for
