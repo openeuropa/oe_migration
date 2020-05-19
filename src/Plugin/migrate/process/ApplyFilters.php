@@ -8,7 +8,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\oe_migration\ValidConfigurableMigrationPluginInterface;
 use Drupal\oe_migration\FilterFormatManager;
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -233,10 +232,10 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   /**
    * Returns the current filter format.
    *
-   * @return \Drupal\filter\Entity\FilterFormat|null
+   * @return \Drupal\filter\FilterFormatInterface|null
    *   The current filter format.
    */
-  protected function getConfigurationFilterFormat(): ?FilterFormat {
+  protected function getConfigurationFilterFormat(): ?FilterFormatInterface {
     return is_string($this->configuration['filter_format']) ? $this->filterFormatManager->getFilterFormat($this->configuration['filter_format']) : NULL;
   }
 
@@ -262,7 +261,6 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   protected function doFilter(string $value): string {
     /** @var \Drupal\filter\FilterPluginCollection|null $filters */
     $filters = $this->getFiltersToApply();
-    /** @var string $langcode */
     $langcode = $this->getLangcode();
     if ($filters && $filters->count() > 0) {
       foreach ($filters as $filter) {
@@ -282,7 +280,7 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
    *   The list of filters to apply or null.
    */
   protected function getFiltersToApply(): ?FilterPluginCollection {
-    /** @var \Drupal\filter\Entity\FilterFormat $filter_format */
+    /** @var \Drupal\filter\FilterFormatInterface $filter_format */
     $filter_format = $this->getConfigurationFilterFormat();
 
     // If the list of filters to apply is set, remove the unwanted filters.

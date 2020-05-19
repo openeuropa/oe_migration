@@ -6,8 +6,8 @@ namespace Drupal\Tests\oe_migration\Unit;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\filter\FilterFormatInterface;
 use Drupal\oe_migration\FilterFormatManager;
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\Plugin\FilterInterface;
 use Drupal\Tests\UnitTestCase;
@@ -88,7 +88,7 @@ class FilterFormatManagerTest extends UnitTestCase {
     ];
 
     // Mock a FilterFormat.
-    $this->filterFormat = $this->createMock(FilterFormat::class);
+    $this->filterFormat = $this->createMock(FilterFormatInterface::class);
 
     // Mock a FilterFormatStorage.
     $this->filterFormatStorage = $this->createMock(EntityStorageInterface::class);
@@ -246,7 +246,7 @@ class FilterFormatManagerTest extends UnitTestCase {
     $this->assertNull($this->filterFormatManager->getEnabledFilters($this->filterFormat));
 
     // Mock a new FilterFormat.
-    $filter_format = $this->createMock(FilterFormat::class);
+    $filter_format = $this->createMock(FilterFormatInterface::class);
 
     // Mock the FilterFormat filters() method so that it returns an array, not
     // an instance of FilterPluginCollection.

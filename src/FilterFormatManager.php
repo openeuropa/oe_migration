@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_migration;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\filter\Entity\FilterFormat;
+use Drupal\filter\FilterFormatInterface;
 use Drupal\filter\FilterPluginCollection;
 
 /**
@@ -27,7 +27,7 @@ class FilterFormatManager {
   /**
    * The filter format storage.
    *
-   * @var \Drupal\Core\Config\Entity\ConfigEntityStorage
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $filterFormatStorage;
 
@@ -51,23 +51,23 @@ class FilterFormatManager {
    * @param string $id
    *   The filter format id.
    *
-   * @return \Drupal\filter\Entity\FilterFormat|null
-   *   The filter format object or null.
+   * @return \Drupal\filter\FilterFormatInterface|null
+   *   The filter format object. NULL if no matching filter format is found.
    */
-  public function getFilterFormat(string $id): ?FilterFormat {
+  public function getFilterFormat(string $id): ?FilterFormatInterface {
     return $this->filterFormatStorage ? $this->filterFormatStorage->load($id) : NULL;
   }
 
   /**
    * Returns a list of filter IDs for a given filter format.
    *
-   * @param \Drupal\filter\Entity\FilterFormat $filter_format
+   * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format object.
    *
    * @return array
    *   The list of filter IDs for a given filter format or an empty list.
    */
-  public function getFilterIds(FilterFormat $filter_format): array {
+  public function getFilterIds(FilterFormatInterface $filter_format): array {
     $ids = $filter_format->filters()->getInstanceIds();
     return is_array($ids) && !empty($ids) ? array_keys($ids) : [];
   }
@@ -77,27 +77,27 @@ class FilterFormatManager {
    *
    * @param string $filter_id
    *   The filter id.
-   * @param \Drupal\filter\Entity\FilterFormat $filter_format
+   * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format.
    *
    * @return bool
    *   The answer to whether a filter id is valid for the given filter format or
    *   not.
    */
-  public function isValidFilterId(string $filter_id, FilterFormat $filter_format): bool {
+  public function isValidFilterId(string $filter_id, FilterFormatInterface $filter_format): bool {
     return in_array($filter_id, $this->getFilterIds($filter_format));
   }
 
   /**
    * Returns a list of enabled filters for a given filter format.
    *
-   * @param \Drupal\filter\Entity\FilterFormat $filter_format
+   * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format object.
    *
    * @return \Drupal\filter\FilterPluginCollection|null
    *   The list of enabled filters for the given filter format.
    */
-  public function getEnabledFilters(FilterFormat $filter_format): ?FilterPluginCollection {
+  public function getEnabledFilters(FilterFormatInterface $filter_format): ?FilterPluginCollection {
     /** @var \Drupal\filter\FilterPluginCollection|null $filters */
     $filters = $filter_format->filters();
     if (!($filters instanceof FilterPluginCollection) || !($filters->count() > 0)) {
@@ -117,14 +117,14 @@ class FilterFormatManager {
   /**
    * Returns a list of allowed HTML tags for a given filter format.
    *
-   * @param \Drupal\filter\Entity\FilterFormat $filter_format
+   * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format object.
    *
    * @return array
    *   The list of allowed HTML tags for the given filter format if any, else an
    *   empty array.
    */
-  public function getAllowedTags(FilterFormat $filter_format): array {
+  public function getAllowedTags(FilterFormatInterface $filter_format): array {
     /** @var array $html_restrictions */
     $html_restrictions = $filter_format->getHtmlRestrictions();
     /** @var string[] $allowed_tags */
@@ -140,13 +140,13 @@ class FilterFormatManager {
    *
    * @param string $tag
    *   The tag to verify.
-   * @param \Drupal\filter\Entity\FilterFormat $filter_format
+   * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format object.
    *
    * @return bool
    *   The result of the verification operation.
    */
-  public function isAllowedTag(string $tag, FilterFormat $filter_format): bool {
+  public function isAllowedTag(string $tag, FilterFormatInterface $filter_format): bool {
     /** @var array $allowed_tags */
     $allowed_tags = array_map('strtolower', $this->getAllowedTags($filter_format));
     return in_array(strtolower($tag), $allowed_tags);

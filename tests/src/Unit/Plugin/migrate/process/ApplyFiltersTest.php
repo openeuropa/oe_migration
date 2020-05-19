@@ -6,7 +6,7 @@ namespace Drupal\Tests\oe_migration\Unit\Plugin\migrate\process;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\filter\Entity\FilterFormat;
+use Drupal\filter\FilterFormatInterface;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterInterface;
@@ -145,7 +145,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
       ->withConsecutive()
       ->willReturn(new \ArrayObject([$this->filter]));
 
-    $this->filterFormat = $this->getMockBuilder(FilterFormat::class)
+    $this->filterFormat = $this->getMockBuilder(FilterFormatInterface::class)
       ->disableOriginalConstructor()
       ->getMock();
     $this->filterFormat->expects($this->any())
