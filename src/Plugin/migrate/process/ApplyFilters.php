@@ -279,13 +279,11 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   /**
    * Returns a list of filters to apply.
    *
-   * @return \Drupal\filter\FilterPluginCollection|null
-   *   The list of filters to apply or null.
+   * @return \Drupal\filter\FilterPluginCollection
+   *   The list of filters to apply.
    */
-  protected function getFiltersToApply(): ?FilterPluginCollection {
-    /** @var \Drupal\filter\FilterFormatInterface $filter_format */
+  protected function getFiltersToApply(): FilterPluginCollection {
     $filter_format = $this->getConfigurationFilterFormat();
-
     // If the list of filters to apply is set, remove the unwanted filters.
     if (isset($this->configuration['filters_to_apply']) && is_array($this->configuration['filters_to_apply'])) {
       // Get the filters for the given filter format.
@@ -299,7 +297,6 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
     }
     else {
       // Get the enabled filters for the given filter format.
-      /** @var \Drupal\filter\FilterPluginCollection $filters_to_apply */
       $filters_to_apply = $this->filterFormatManager->getEnabledFilters($filter_format);
       // If the list of filters to skip is set, remove them from the list.
       if (isset($this->configuration['filters_to_skip']) && is_array($this->configuration['filters_to_skip'])) {
