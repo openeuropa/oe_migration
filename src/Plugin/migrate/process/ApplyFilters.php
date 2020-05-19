@@ -264,7 +264,6 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
    *   The filtered string.
    */
   protected function doFilter(string $value): string {
-    /** @var \Drupal\filter\FilterPluginCollection|null $filters */
     $filters = $this->getFiltersToApply();
     $langcode = $this->getLangcode();
     if ($filters && $filters->count() > 0) {
