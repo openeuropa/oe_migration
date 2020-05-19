@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterPluginCollection;
@@ -38,22 +36,13 @@ class FilterFormatManager {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->setFilterFormatStorage();
-  }
-
-  /**
-   * The filterFormatStorage setter.
-   */
-  public function setFilterFormatStorage(): void {
-    try {
-      $this->filterFormatStorage = $this->entityTypeManager->getStorage('filter_format');
-    }
-    catch (PluginNotFoundException | InvalidPluginDefinitionException $e) {
-      $this->filterFormatStorage = NULL;
-    }
+    $this->filterFormatStorage = $this->entityTypeManager->getStorage('filter_format');
   }
 
   /**
