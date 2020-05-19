@@ -84,7 +84,7 @@ class FilterFormatManager {
    *   The answer to whether a filter id is valid for the given filter format or
    *   not.
    */
-  public function isValidFilterId(string $filter_id, FilterFormatInterface $filter_format): bool {
+  public function isFilterIdValid(string $filter_id, FilterFormatInterface $filter_format): bool {
     return in_array($filter_id, $this->getFilterIds($filter_format));
   }
 

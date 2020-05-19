@@ -158,9 +158,9 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     // Mock a FilterFormatManager service.
     $this->filterFormatManager = $this->createMock(FilterFormatManager::class);
 
-    // Mock the FilterFormatManager isValidFilterId() method.
+    // Mock the FilterFormatManager isFilterIdValid() method.
     $this->filterFormatManager->expects($this->any())
-      ->method('isValidFilterId')
+      ->method('isFilterIdValid')
       ->with('valid_filter_id', $this->filterFormat)
       ->willReturn(TRUE);
 

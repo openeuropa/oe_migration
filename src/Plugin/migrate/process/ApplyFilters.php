@@ -220,7 +220,7 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
             if (!is_string($filter_id)) {
               throw new \InvalidArgumentException(sprintf('The configuration option "%s" must contain strings. "%s" is not a string.', $key, var_export($filter_id, TRUE)));
             }
-            if ($this->filterFormatManager->isValidFilterId($filter_id, $filter_format) !== TRUE) {
+            if ($this->filterFormatManager->isFilterIdValid($filter_id, $filter_format) !== TRUE) {
               throw new \InvalidArgumentException(sprintf('"%s" is not a valid filter for the "%s" filter format.', $filter_id, $filter_format->id()));
             }
           }
