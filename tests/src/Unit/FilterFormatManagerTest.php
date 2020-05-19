@@ -378,7 +378,7 @@ class FilterFormatManagerTest extends UnitTestCase {
   }
 
   /**
-   * Test the isAllowedTag method.
+   * Test the isTagAllowed method.
    *
    * Create a valid allowed tags list and verify that:
    * - validating an allowed tag works.
@@ -386,7 +386,7 @@ class FilterFormatManagerTest extends UnitTestCase {
    * - not validating a not allowed tag works.
    * - not validating an empty string works.
    */
-  public function testIsAllowedTag() {
+  public function testIsTagAllowed() {
     // A valid array where the "allowed" key exists. In any other case the list
     // of allowed tags is an empty array and the build-in in_array() function
     // returns FALSE. Please, refer to the previous test, testGetAllowedTags().
@@ -395,22 +395,22 @@ class FilterFormatManagerTest extends UnitTestCase {
       ->willReturn($this->allowedTags);
 
     // The tested tag is an allowed tag. The expected return value is TRUE.
-    $this->assertTrue($this->filterFormatManager->isAllowedTag('allowed_tag_1', $this->filterFormat));
+    $this->assertTrue($this->filterFormatManager->isTagAllowed('allowed_tag_1', $this->filterFormat));
 
     // The tested tag is an allowed tag (case-insensitive match). The expected
     // return value is TRUE.
-    $this->assertTrue($this->filterFormatManager->isAllowedTag('ALLOWED_tag_2', $this->filterFormat));
+    $this->assertTrue($this->filterFormatManager->isTagAllowed('ALLOWED_tag_2', $this->filterFormat));
 
     // The tested tag is an allowed tag (case-insensitive match). The expected
     // return value is TRUE.
-    $this->assertTrue($this->filterFormatManager->isAllowedTag('allowed_tag_3', $this->filterFormat));
+    $this->assertTrue($this->filterFormatManager->isTagAllowed('allowed_tag_3', $this->filterFormat));
 
     // The tested tag is a not allowed tag. The expected return value is FALSE.
-    $this->assertFalse($this->filterFormatManager->isAllowedTag('not_allowed_tag', $this->filterFormat));
+    $this->assertFalse($this->filterFormatManager->isTagAllowed('not_allowed_tag', $this->filterFormat));
 
     // The tested tag is a not allowed tag (empty string). The expected return
     // value is FALSE.
-    $this->assertFalse($this->filterFormatManager->isAllowedTag('', $this->filterFormat));
+    $this->assertFalse($this->filterFormatManager->isTagAllowed('', $this->filterFormat));
   }
 
 }

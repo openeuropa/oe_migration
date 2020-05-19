@@ -146,7 +146,7 @@ class FilterFormatManager {
    * @return bool
    *   The result of the verification operation.
    */
-  public function isAllowedTag(string $tag, FilterFormatInterface $filter_format): bool {
+  public function isTagAllowed(string $tag, FilterFormatInterface $filter_format): bool {
     /** @var array $allowed_tags */
     $allowed_tags = array_map('strtolower', $this->getAllowedTags($filter_format));
     return in_array(strtolower($tag), $allowed_tags);
