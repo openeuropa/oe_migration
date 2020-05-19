@@ -214,10 +214,6 @@ class FilterFormatManagerTest extends UnitTestCase {
    * of all filters to TRUE and verify that:
    * - getting 3 enabled filters (status is set to TRUE for all of them) of a
    *   FilterPluginCollection that contains 3 elements (count = 3) works.
-   * - getting NULL when trying to get the enabled filters of a
-   *   FilterPluginCollection that contains 0 elements (count = 0) works.
-   * - getting NULL when trying to get the enabled filters of a variable that is
-   *   not an instance of FilterPluginCollection works.
    */
   public function testGetEnabledFiltersWithFilterPluginCollectionAlterations() {
     // Mock the inherited getConfiguration() method for each filter.
@@ -235,28 +231,11 @@ class FilterFormatManagerTest extends UnitTestCase {
     // Mock the FilterPluginCollection count() method.
     $this->filterPluginCollection->expects($this->any())
       ->method('count')
-      ->willReturnOnConsecutiveCalls(3, 0);
+      ->willReturn(3);
 
     // Set the FilterPluginCollection counter to 3 and test that all enabled
     // filters (x3) will be returned.
     $this->assertEquals($this->filterPluginCollection, $this->filterFormatManager->getEnabledFilters($this->filterFormat));
-
-    // Set the FilterPluginCollection counter to 0 and verify that no filters
-    // will be returned. The expected return value is NULL.
-    $this->assertNull($this->filterFormatManager->getEnabledFilters($this->filterFormat));
-
-    // Mock a new FilterFormat.
-    $filter_format = $this->createMock(FilterFormatInterface::class);
-
-    // Mock the FilterFormat filters() method so that it returns an array, not
-    // an instance of FilterPluginCollection.
-    $filter_format->expects($this->any())
-      ->method('filters')
-      ->willReturn($this->filters);
-
-    // The returned value of the FilterFormat filters() method is not an
-    // instance of FilterPluginCollection, so the expected value is NULL.
-    $this->assertNull($this->filterFormatManager->getEnabledFilters($filter_format));
   }
 
   /**

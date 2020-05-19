@@ -56,10 +56,10 @@ interface FilterFormatManagerInterface {
    * @param \Drupal\filter\FilterFormatInterface $filter_format
    *   The filter format object.
    *
-   * @return \Drupal\filter\FilterPluginCollection|null
+   * @return \Drupal\filter\FilterPluginCollection
    *   The list of enabled filters for the given filter format.
    */
-  public function getEnabledFilters(FilterFormatInterface $filter_format): ?FilterPluginCollection;
+  public function getEnabledFilters(FilterFormatInterface $filter_format): FilterPluginCollection;
 
   /**
    * Returns a list of allowed HTML tags for a given filter format.

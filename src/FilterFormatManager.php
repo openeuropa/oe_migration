@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration;
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\filter\FilterFormatInterface;
 use Drupal\filter\FilterPluginCollection;
@@ -70,17 +71,16 @@ class FilterFormatManager implements FilterFormatManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEnabledFilters(FilterFormatInterface $filter_format): ?FilterPluginCollection {
-    /** @var \Drupal\filter\FilterPluginCollection|null $filters */
+  public function getEnabledFilters(FilterFormatInterface $filter_format): FilterPluginCollection {
+    /** @var \Drupal\filter\FilterPluginCollection $filters */
     $filters = $filter_format->filters();
-    if (!($filters instanceof FilterPluginCollection) || !($filters->count() > 0)) {
-      return NULL;
-    }
-    foreach ($filters as $filter) {
-      $configuration = $filter->getConfiguration();
-      $status = is_array($configuration) && array_key_exists('status', $configuration) ? $configuration['status'] : FALSE;
-      if ($status !== TRUE) {
-        $filters->removeInstanceId($filter->getPluginId());
+    if (($filters->count() > 0)) {
+      foreach ($filters as $filter) {
+        $configuration = $filter->getConfiguration();
+        $status = is_array($configuration) && array_key_exists('status', $configuration) ? $configuration['status'] : FALSE;
+        if ($status !== TRUE) {
+          $filters->removeInstanceId($filter->getPluginId());
+        }
       }
     }
 
