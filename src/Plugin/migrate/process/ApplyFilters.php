@@ -6,8 +6,9 @@ namespace Drupal\oe_migration\Plugin\migrate\process;
 
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\filter\FilterFormatInterface;
+use Drupal\oe_migration\FilterFormatManagerInterface;
 use Drupal\oe_migration\ValidConfigurableMigrationPluginInterface;
-use Drupal\oe_migration\FilterFormatManager;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -119,7 +120,7 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   /**
    * The FilterFormatManager service.
    *
-   * @var \Drupal\oe_migration\FilterFormatManager
+   * @var \Drupal\oe_migration\FilterFormatManagerInterface
    */
   protected $filterFormatManager;
 
@@ -142,7 +143,7 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
     $plugin_id,
     $plugin_definition,
     LanguageManagerInterface $language_manager,
-    FilterFormatManager $filter_format_manager) {
+    FilterFormatManagerInterface $filter_format_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->languageManager = $language_manager;
     $this->filterFormatManager = $filter_format_manager;

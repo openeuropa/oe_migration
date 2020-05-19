@@ -12,7 +12,7 @@ use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
-use Drupal\oe_migration\FilterFormatManager;
+use Drupal\oe_migration\FilterFormatManagerInterface;
 use Drupal\oe_migration\Plugin\migrate\process\ApplyFilters;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 
@@ -156,7 +156,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
       ->willReturn($this->filterPluginCollection);
 
     // Mock a FilterFormatManager service.
-    $this->filterFormatManager = $this->createMock(FilterFormatManager::class);
+    $this->filterFormatManager = $this->createMock(FilterFormatManagerInterface::class);
 
     // Mock the FilterFormatManager isFilterIdValid() method.
     $this->filterFormatManager->expects($this->any())

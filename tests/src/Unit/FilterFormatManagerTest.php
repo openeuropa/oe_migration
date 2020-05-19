@@ -22,7 +22,7 @@ class FilterFormatManagerTest extends UnitTestCase {
   /**
    * The class that will be tested.
    *
-   * @var \Drupal\oe_migration\FilterFormatManager
+   * @var \Drupal\oe_migration\FilterFormatManagerInterface
    */
   protected $filterFormatManager;
 
