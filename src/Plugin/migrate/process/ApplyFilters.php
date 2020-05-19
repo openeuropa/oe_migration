@@ -233,11 +233,13 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
   /**
    * Returns the current filter format.
    *
-   * @return \Drupal\filter\FilterFormatInterface|null
-   *   The current filter format.
+   * @return \Drupal\filter\FilterFormatInterface
+   *   The current filter format. The validateConfigurationKeyFilterFormat()
+   *   method ensures that the filter format exists and prevents the return of
+   *   NULL.
    */
-  protected function getConfigurationFilterFormat(): ?FilterFormatInterface {
-    return is_string($this->configuration['filter_format']) ? $this->filterFormatManager->getFilterFormat($this->configuration['filter_format']) : NULL;
+  protected function getConfigurationFilterFormat(): FilterFormatInterface {
+    return $this->filterFormatManager->getFilterFormat($this->configuration['filter_format']);
   }
 
   /**
