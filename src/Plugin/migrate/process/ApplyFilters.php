@@ -43,6 +43,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     If the "filters_to_apply" list is declared, the "filters_to_skip" list
  *     will be ignored.
  *
+ * @codingStandardsIgnoreStart
  * Example with minimum configuration:
  * @code
  * process:
@@ -105,6 +106,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *         # Do not correct faulty and chopped off HTML.
  *         - filter_htmlcorrector
  * @endcode
+ * @codingStandardsIgnoreEnd
  *
  * @MigrateProcessPlugin(
  *   id = "oe_migration_apply_filters"
