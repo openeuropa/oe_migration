@@ -51,12 +51,6 @@ pipeline:
     commands:
       - ./vendor/bin/phpunit
 
-  behat:
-    group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/behat --strict
-
   debug:
     image: fpfis/httpd-php-ci:${PHP_VERSION}
     commands:
