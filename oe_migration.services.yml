@@ -1,0 +1,6 @@
+services:
+  # The OpenEuropa Migration - FilterFormatManager service.
+  oe_migration.filter_format_manager:
+    class: Drupal\oe_migration\FilterFormatManager
+    arguments:
+      - '@entity_type.manager'
