@@ -14,7 +14,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  * It can be used in migrations as a single process plugin.
  *
  * @ConfigEntityType(
- *   id = "migration_process_pipeline",
+ *   id = "oe_migration_process_pipeline",
  *   label = @Translation("Migration Process Pipeline"),
  *   module = "oe_migration",
  *   handlers = {

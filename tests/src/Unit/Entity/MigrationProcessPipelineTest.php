@@ -9,7 +9,9 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManager;
 
 /**
- * Class to test the MigrationProcessPipeline methods.
+ * @coversDefaultClass \Drupal\oe_migration\Entity\MigrationProcessPipeline
+ *
+ * @group oe_migration
  */
 class MigrationProcessPipelineTest extends UnitTestCase {
 

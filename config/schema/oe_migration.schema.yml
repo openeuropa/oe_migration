@@ -1,4 +1,4 @@
-oe_migration.migration_process_pipeline.*:
+oe_migration.oe_migration_process_pipeline.*:
   type: config_entity
   label: 'Migration Process Pipeline'
   mapping:
