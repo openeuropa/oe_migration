@@ -19,7 +19,7 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
  * that you don't want to duplicate.
  *
  *  Available configuration keys:
- *   - id: Pipeline identification. The id of the pipeline that you want to use.
+ *   - id: Pipeline identification. The ID of the pipeline that you want to use.
  *   - placeholders (optional): an array of placeholders to replace in the
  *     pipeline definition. Useful to increase the possibility of pipeline
  *     reuse.
