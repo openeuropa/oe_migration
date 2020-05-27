@@ -1,0 +1,19 @@
+oe_migration.migration_process_pipeline.*:
+  type: config_entity
+  label: 'Migration Process Pipeline'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    module:
+      type: string
+      label: 'Dependent module'
+    process:
+      type: ignore
+      label: 'Process Pipeline'
