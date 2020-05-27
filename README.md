@@ -5,6 +5,7 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
 ### Process plugins
 
 * **ApplyFilters (oe_migration_apply_filters)** : Applies filters of the given filter format to a string.
+* **Pipeline (oe_migration_pipeline)** : Execute a group of process plugin previously saved in a configuration entity.
 
 ## Development setup
 
