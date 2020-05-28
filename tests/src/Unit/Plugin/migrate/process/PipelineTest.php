@@ -56,7 +56,7 @@ class PipelineTest extends MigrateProcessTestCase {
   protected $destinationProperty = 'destination_property';
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();

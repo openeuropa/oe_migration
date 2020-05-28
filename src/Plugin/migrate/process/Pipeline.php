@@ -89,7 +89,7 @@ class Pipeline extends ProcessPluginBase {
   protected $pipeline;
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    *
    * @throws \Drupal\migrate\MigrateException
    */
