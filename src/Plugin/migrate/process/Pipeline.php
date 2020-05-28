@@ -24,6 +24,7 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
  *     pipeline definition. Useful to increase the possibility of pipeline
  *     reuse.
  *
+ * @codingStandardsIgnoreStart
  * Usage example:
  * @code
  * process:
@@ -71,6 +72,7 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
  *     plugin: dom
  *     method: export
  * @endcode
+ * @codingStandardsIgnoreEnd
  *
  * @MigrateProcessPlugin(
  *   id = "oe_migration_pipeline",
