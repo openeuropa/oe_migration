@@ -113,7 +113,7 @@ class Pipeline extends ProcessPluginBase {
    */
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
     // Execute the pipeline.
-    $process = $this->pipeline->getProcess($this->configuration['placeholders']);
+    $process = $this->pipeline->getDefinitions($this->configuration['placeholders']);
     $migrateExecutable->processRow($row, [$destinationProperty => $process], $value);
     return $row->getDestinationProperty($destinationProperty);
   }

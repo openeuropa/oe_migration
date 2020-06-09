@@ -49,7 +49,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
       ],
     ];
     $pipeline = new MigrationProcessPipeline($values, $this->entityType);
-    $result = $pipeline->getProcess();
+    $result = $pipeline->getDefinitions();
     $this->assertArrayEquals($expected, $result);
   }
 
@@ -67,7 +67,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
       ],
     ];
     $pipeline = new MigrationProcessPipeline($values, $this->entityType);
-    $result = $pipeline->getProcess();
+    $result = $pipeline->getDefinitions();
     $this->assertArrayEquals($values['process'], $result);
   }
 
@@ -94,7 +94,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
     $expected[0]['value'] = $value;
 
     $pipeline = new MigrationProcessPipeline($values, $this->entityType);
-    $result = $pipeline->getProcess($tokens);
+    $result = $pipeline->getDefinitions($tokens);
     $this->assertArrayEquals($expected, $result);
   }
 

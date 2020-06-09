@@ -25,6 +25,6 @@ interface MigrationProcessPipelineInterface extends ConfigEntityInterface {
    *
    * @see https://www.drupal.org/node/2129651#get-shorthand
    */
-  public function getProcess(array $config);
+  public function getDefinitions(array $config);
 
 }

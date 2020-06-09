@@ -58,7 +58,7 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
   /**
    * {@inheritdoc}
    */
-  public function getProcess(array $tokens = []): array {
+  public function getDefinitions(array $tokens = []): array {
     $normalized_configurations = [];
     foreach ($this->definitions as $configuration) {
       if (is_string($configuration)) {
