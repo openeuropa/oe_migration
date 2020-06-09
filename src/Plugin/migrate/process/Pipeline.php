@@ -13,13 +13,13 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
 /**
  * This plugin executes a process pipeline loaded from configuration.
  *
- * This plugin is useful to avoid duplicating process definitions in Yaml.
- * You may have a suite of process plugins you are using in several places or a
- * single process plugin with want to duplicate complex/specific configuration
- * that you don't want to duplicate.
+ * This plugin is useful to avoid process duplications in Yaml files.
+ * You may have a suite of process plugins that you are using in several places
+ * or a single process plugin with a complex/specific configuration that you
+ * don't want to replicate in several places.
  *
  *  Available configuration keys:
- *   - id: Pipeline identification. The ID of the pipeline that you want to use.
+ *   - id: The ID of the oe_migration_process_pipeline configuration entity.
  *   - placeholders (optional): an array of placeholders to replace in the
  *     pipeline definition. Useful to increase the possibility of pipeline
  *     reuse.
