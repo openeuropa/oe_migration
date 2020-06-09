@@ -57,6 +57,9 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   The normalized process configuration.
    */
   public function getProcess(array $tokens = []) {
     return $this->getProcessNormalized($this->process, $tokens);
