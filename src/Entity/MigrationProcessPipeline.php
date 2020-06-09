@@ -53,20 +53,14 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
    *
    * @var array
    */
-  protected $process = [];
+  protected $definitions = [];
 
   /**
    * {@inheritdoc}
-   *
-   * @param array $tokens
-   *   A process configuration array.
-   *
-   * @return array
-   *   The normalized process configuration.
    */
-  public function getProcess(array $tokens = []) {
+  public function getProcess(array $tokens = []): array {
     $normalized_configurations = [];
-    foreach ($this->process as $configuration) {
+    foreach ($this->definitions as $configuration) {
       if (is_string($configuration)) {
         $configuration = [
           'plugin' => 'get',
@@ -91,7 +85,7 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
    * @return array
    *   The configuration modified.
    */
-  protected function replaceTokens(array $configuration, array $tokens) {
+  protected function replaceTokens(array $configuration, array $tokens): array {
     foreach ($tokens as $token_name => $token_value) {
       if ($key = array_search($token_name, $configuration, TRUE)) {
         $configuration[$key] = $token_value;
