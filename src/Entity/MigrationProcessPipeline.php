@@ -58,27 +58,15 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
   /**
    * {@inheritdoc}
    *
-   * @return array
-   *   The normalized process configuration.
-   */
-  public function getProcess(array $tokens = []) {
-    return $this->getProcessNormalized($this->process, $tokens);
-  }
-
-  /**
-   * Resolve shorthands into a list of plugin configurations.
-   *
-   * @param array $process
-   *   A process configuration array.
    * @param array $tokens
    *   A process configuration array.
    *
    * @return array
    *   The normalized process configuration.
    */
-  protected function getProcessNormalized(array $process, array $tokens) {
+  public function getProcess(array $tokens = []) {
     $normalized_configurations = [];
-    foreach ($process as $configuration) {
+    foreach ($this->process as $configuration) {
       if (is_string($configuration)) {
         $configuration = [
           'plugin' => 'get',
@@ -88,6 +76,7 @@ class MigrationProcessPipeline extends ConfigEntityBase implements MigrationProc
       $configuration = $this->replaceTokens($configuration, $tokens);
       $normalized_configurations[] = $configuration;
     }
+
     return $normalized_configurations;
   }
 
