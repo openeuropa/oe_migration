@@ -10,7 +10,6 @@ use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Drupal\oe_migration\Entity\MigrationProcessPipeline;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
