@@ -8,8 +8,6 @@ use Drupal\oe_migration\Entity\MigrationProcessPipelineInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 use Drupal\oe_migration\Plugin\migrate\process\Pipeline;
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityTypeRepository;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 
@@ -93,12 +91,9 @@ class PipelineTest extends MigrateProcessTestCase {
    */
   public function testInvalidConfiguration() {
     $configuration = [];
-    try {
-      new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
-    }
-    catch (\InvalidArgumentException | MigrateException $e) {
-      $this->assertEquals('The pipeline plugin requires a pipeline ID, none found.', $e->getMessage());
-    }
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('The pipeline plugin requires a pipeline ID, none found.');
+    new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
   }
 
   /**
@@ -112,12 +107,9 @@ class PipelineTest extends MigrateProcessTestCase {
       ->with($configuration['id'])
       ->willReturn(NULL);
 
-    try {
-      new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
-    }
-    catch (MigrateException $e) {
-      $this->assertEquals(sprintf('The pipeline plugin could not load the given process pipeline "%s".', $this->invalidId), $e->getMessage());
-    }
+    $this->expectException(MigrateException::class);
+    $this->expectExceptionMessage(sprintf('The pipeline plugin could not load the given process pipeline "%s".', $this->invalidId));
+    new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
   }
 
   /**
