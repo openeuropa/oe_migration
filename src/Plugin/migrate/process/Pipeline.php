@@ -39,40 +39,9 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
  * The above example expects a process pipeline "my_process_pipeline" defined
  * in configuration.
  *
- * Create a "oe_migration.oe_migration_process_pipeline.my_process_pipeline.yml"
- * file, which can contain an unlimited amount of process plugins:
- * @code
- * langcode: en
- * status: true
- * id: my_process_pipeline
- * label: 'My process pipeline'
- * description: 'Process pipeline for processing fulltext fields'
- * process:
- *   -
- *     plugin: dom
- *     method: import
- *   -
- *     plugin: dom_str_replace
- *     mode: attribute
- *     xpath: '//a'
- *     attribute_options:
- *       name: href
- *     search: 'foo'
- *     replace: 'bar'
- *   -
- *     plugin: dom_str_replace
- *     mode: attribute
- *     xpath: '//a'
- *     attribute_options:
- *       name: href
- *     regex: true
- *     search: '/foo/'
- *     replace: TOKEN1
- *   -
- *     plugin: dom
- *     method: export
- * @endcode
- * @codingStandardsIgnoreEnd
+ * This my_process_pipeline has to be an instance of a configuration entity with
+ * type 'oe_migration_process_pipeline'.
+ * @see oe_migration.schema.yml
  *
  * @MigrateProcessPlugin(
  *   id = "oe_migration_pipeline",

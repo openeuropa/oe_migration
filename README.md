@@ -77,6 +77,46 @@ docker-compose exec web ./vendor/bin/run drupal:site-install
 Using default configuration, the development site files should be available in the `build` directory and the development site
 should be available at: [http://127.0.0.1:8080/build](http://127.0.0.1:8080/build).
 
+##### How to use the Pipelines plugin
+The process plugin Pipeline executes a process pipeline loaded from configuration.
+
+This configuration entity can be created in the database of different ways, provided by the Drupal Core modules:
+- Using the command `drush config:import` with the `--partial` option (`drush config:import --partial --source/path/to/the/folder/`).
+- Using the UI provided by the module Configuration Manager to import single files (or going directly to the path `/admin/config/development/configuration/single/import_en`)
+- Setting a correct yaml file into a /config/install directory inside a custom module.
+
+This is an example of a `oe_migration.oe_migration_process_pipeline` config entity in a yaml format, ready to be imported:
+
+```
+  id: my_process_pipeline
+  label: 'My process pipeline'
+  description: 'Process pipeline for processing fulltext fields'
+  process:
+    -
+      plugin: dom
+      method: import
+    -
+      plugin: dom_str_replace
+      mode: attribute
+      xpath: '//a'
+      attribute_options:
+        name: href
+      search: 'foo'
+      replace: 'bar'
+    -
+      plugin: dom_str_replace
+      mode: attribute
+      xpath: '//a'
+      attribute_options:
+        name: href
+      regex: true
+      search: '/foo/'
+      replace: TOKEN1
+    -
+      plugin: dom
+      method: export
+```
+
 #### Running the tests
 
 To run the grumphp checks:
