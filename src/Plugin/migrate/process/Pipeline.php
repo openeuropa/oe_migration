@@ -95,11 +95,11 @@ class Pipeline extends ProcessPluginBase implements ContainerFactoryPluginInterf
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     // Execute the pipeline.
     $process = $this->pipeline->getDefinitions($this->configuration['placeholders']);
-    $migrateExecutable->processRow($row, [$destinationProperty => $process], $value);
-    return $row->getDestinationProperty($destinationProperty);
+    $migrate_executable->processRow($row, [$destination_property => $process], $value);
+    return $row->getDestinationProperty($destination_property);
   }
 
   /**
