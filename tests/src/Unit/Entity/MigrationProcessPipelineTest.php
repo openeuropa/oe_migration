@@ -39,7 +39,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
    */
   public function testGetProcessWithoutPlugins() {
     $fixed_source = $this->randomMachineName();
-    $values = ['process' => [$fixed_source]];
+    $values = ['definitions' => [$fixed_source]];
 
     // The default plugin should be 'get'.
     $expected = [
@@ -54,11 +54,11 @@ class MigrationProcessPipelineTest extends UnitTestCase {
   }
 
   /**
-   * Test the getProcess with a plugin configured.
+   * Test the getDefinitions with a plugin configured.
    */
-  public function testGetProcessWithPlugins() {
+  public function testGetDefinitionsWithPlugins() {
     $values = [
-      'process' => [
+      'definitions' => [
         [
           'plugin' => $this->randomMachineName(),
           'source' => $this->randomMachineName(),
@@ -68,13 +68,13 @@ class MigrationProcessPipelineTest extends UnitTestCase {
     ];
     $pipeline = new MigrationProcessPipeline($values, $this->entityType);
     $result = $pipeline->getDefinitions();
-    $this->assertArrayEquals($values['process'], $result);
+    $this->assertArrayEquals($values['definitions'], $result);
   }
 
   /**
-   * Test the getProcess with a replacement configured.
+   * Test the getDefitinions with a replacement configured.
    */
-  public function testGetProcessWithReplacements() {
+  public function testGetDefitinionsWithReplacements() {
     // A case with replacements.
     $token = $this->randomMachineName();
     $value = $this->randomMachineName();
@@ -82,7 +82,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
       $token => $value,
     ];
     $values = [
-      'process' => [
+      'definitions' => [
         [
           'plugin' => $this->randomMachineName(),
           'source' => $this->randomMachineName(),
@@ -90,7 +90,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
         ],
       ],
     ];
-    $expected = $values['process'];
+    $expected = $values['definitions'];
     $expected[0]['value'] = $value;
 
     $pipeline = new MigrationProcessPipeline($values, $this->entityType);

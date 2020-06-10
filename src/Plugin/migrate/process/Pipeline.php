@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration\Plugin\migrate\process;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Drupal\oe_migration\Entity\MigrationProcessPipeline;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * This plugin executes a process pipeline loaded from configuration.
@@ -48,7 +51,7 @@ use Drupal\oe_migration\Entity\MigrationProcessPipeline;
  *   handle_multiples = TRUE
  * )
  */
-class Pipeline extends ProcessPluginBase {
+class Pipeline extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The process pipeline.
@@ -62,17 +65,29 @@ class Pipeline extends ProcessPluginBase {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configuration += [
       'placeholders' => [],
     ];
     $this->validateConfiguration();
 
-    $this->pipeline = MigrationProcessPipeline::load($this->configuration['id']);
+    $this->pipeline = $entity_type_manager->getStorage('oe_migration_process_pipeline')->load($this->configuration['id']);
     if (empty($this->pipeline)) {
       throw new MigrateException(sprintf('The pipeline plugin could not load the given process pipeline "%s".', $this->configuration['id']));
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
   }
 
   /**

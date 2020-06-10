@@ -56,6 +56,20 @@ class PipelineTest extends MigrateProcessTestCase {
   protected $destinationProperty = 'destination_property';
 
   /**
+   * A entity Manager Mock.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * A entity storage interfaz mock.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $entityStorage;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -64,6 +78,14 @@ class PipelineTest extends MigrateProcessTestCase {
     $this->migrationProcessPipeline = $this->createMock(MigrationProcessPipelineInterface::class);
     $this->validId = $this->randomMachineName();
     $this->invalidId = $this->randomMachineName();
+
+    $this->entityStorage = $this->createMock(EntityStorageInterface::class);
+
+    $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+    $this->entityTypeManager->expects($this->any())
+      ->method('getStorage')
+      ->with('oe_migration_process_pipeline')
+      ->willReturn($this->entityStorage);
   }
 
   /**
@@ -71,9 +93,8 @@ class PipelineTest extends MigrateProcessTestCase {
    */
   public function testInvalidConfiguration() {
     $configuration = [];
-
     try {
-      new Pipeline($configuration, $this->pluginId, []);
+      new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
     }
     catch (\InvalidArgumentException | MigrateException $e) {
       $this->assertEquals('The pipeline plugin requires a pipeline ID, none found.', $e->getMessage());
@@ -84,12 +105,15 @@ class PipelineTest extends MigrateProcessTestCase {
    * Test with an invalid pipeline.
    */
   public function testInvalidPipeline() {
-    $this->initializeContainer();
-
     $configuration = ['id' => $this->invalidId];
 
+    $this->entityStorage->expects($this->once())
+      ->method('load')
+      ->with($configuration['id'])
+      ->willReturn(NULL);
+
     try {
-      new Pipeline($configuration, $this->pluginId, []);
+      new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
     }
     catch (MigrateException $e) {
       $this->assertEquals(sprintf('The pipeline plugin could not load the given process pipeline "%s".', $this->invalidId), $e->getMessage());
@@ -100,65 +124,32 @@ class PipelineTest extends MigrateProcessTestCase {
    * Test the transform method vor a valid use case.
    */
   public function testTransform() {
-
-    $this->initializeContainer();
-
     $configuration = ['id' => $this->validId];
-    $pipeline = new Pipeline($configuration, $this->pluginId, []);
+    $this->entityStorage->expects($this->once())
+      ->method('load')
+      ->with($configuration['id'])
+      ->willReturn($this->migrationProcessPipeline);
+
+    $pipeline = new Pipeline($configuration, $this->pluginId, [], $this->entityTypeManager);
     $value = [];
     $transformed_value = $this->randomGenerator->string();
 
     // Added a necessary mock only used when the plugin exits and is valid.
-    $process = [
+    $definitions = [
       'process1' => $this->randomMachineName(),
       'process2' => $this->randomMachineName(),
     ];
     $this->migrationProcessPipeline->expects($this->once())
-      ->method('getProcess')
-      ->willReturn($process);
+      ->method('getDefinitions')
+      ->willReturn($definitions);
 
     // Ensure that the processRow is called. That means that the process
     // works as expected.
     $this->migrateExecutable->expects($this->once())
       ->method('processRow')
-      ->with($this->row, [$this->destinationProperty => $process], $value)
+      ->with($this->row, [$this->destinationProperty => $definitions], $value)
       ->willReturn($transformed_value);
     $pipeline->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
-  }
-
-  /**
-   * Initialize the Drupal container with the necessary mocks.
-   */
-  protected function initializeContainer() {
-    $entity_class = $this->randomMachineName();
-
-    // Mock the entity repository for the used methods.
-    $entity_repository = $this->createMock(EntityTypeRepository::class);
-    $entity_repository->expects($this->any())
-      ->method('getEntityTypeFromClass')
-      ->willReturn($entity_class);
-
-    // The storage mock is necessary to be returned later.
-    $storage = $this->createMock(EntityStorageInterface::class);
-    $storage->expects($this->any())
-      ->method('load')
-      ->willReturnMap([
-        [$this->validId, $this->migrationProcessPipeline],
-        [$this->invalidId, NULL],
-      ]);
-
-    // Finally, the entity type manager is called to load the config entity
-    // MigrationProcessPipeline.
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_manager->expects($this->any())
-      ->method('getStorage')
-      ->with($entity_class)
-      ->willReturn($storage);
-
-    $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $entity_type_manager);
-    $container->set('entity_type.repository', $entity_repository);
-    \Drupal::setContainer($container);
   }
 
 }
