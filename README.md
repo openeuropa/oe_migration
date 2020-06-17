@@ -7,6 +7,14 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
 * **ApplyFilters (oe_migration_apply_filters)** : Applies filters of the given filter format to a string.
 * **Pipeline (oe_migration_pipeline)** : Executes a group of process plugins, stored in a `oe_migration_process_pipeline` configuration entity.
 
+
+### Sub-modules
+
+* #### OpenEuropa Workflow
+  * **[Process plugin] SetWorkflowState (oe_migration_set_workflow_state)** : Sets the workflow state of an entity.
+
+    **Dependencies:** [Workflows](https://www.drupal.org/docs/8/core/modules/workflows)
+
 ## Development setup
 
 You can build the development site by running the following steps:
