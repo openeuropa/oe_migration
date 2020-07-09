@@ -82,7 +82,7 @@ class DrushCommandsTest extends BrowserTestBase {
 
     // Generate fruit_terms.
     $this->drush('oe_migration_views:generate', ['fruit_terms']);
-    $this->assertContains("[success] Created default_fruit_terms migrate report view.", $this->getErrorOutput());
+    $this->assertContains('[success] Created default_fruit_terms migrate report view.', $this->getErrorOutput());
 
     // Check that the view exists.
     $view_storage_controller = \Drupal::entityTypeManager()->getStorage('view');
@@ -151,8 +151,8 @@ class DrushCommandsTest extends BrowserTestBase {
     $this->assertEqual($page_1['display_options']['path'], 'admin/structure/migrate/manage/default/migrations/fruit_terms/reports');
 
     // Check "View details" presence in migrations listing.
-    $this->drupalGet("/admin/structure/migrate/manage/default/migrations");
-    $this->assertSession()->responseContains('<a href="/admin/structure/migrate/manage/default/migrations/fruit_terms/reports">View details</a>');
+    $this->drupalGet('/admin/structure/migrate/manage/default/migrations');
+    $this->assertSession()->responseContains('admin/structure/migrate/manage/default/migrations/fruit_terms/reports">View details</a>');
 
     // Check view page response (before import).
     $this->drupalGet('/admin/structure/migrate/manage/default/migrations/fruit_terms/reports');
@@ -166,7 +166,7 @@ class DrushCommandsTest extends BrowserTestBase {
 
     // Test generate when the view already exists.
     $this->drush('oe_migration_views:generate', ['fruit_terms']);
-    $this->assertContains("[warning] Skipped default_fruit_terms view creation: The view already exists.", $this->getErrorOutput());
+    $this->assertContains('[warning] Skipped default_fruit_terms view creation: The view already exists.', $this->getErrorOutput());
   }
 
   /**
