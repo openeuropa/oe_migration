@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\migrate\Exception\RequirementsException;
+use Drupal\migrate\Plugin\RequirementsInterface;
 use Drupal\oe_migration_views\Plugin\migrate\id_map\SqlData;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
 use Drupal\migrate\Plugin\migrate\id_map\Sql;
@@ -20,7 +22,17 @@ function oe_migration_views_views_data_alter(&$data) {
   $migrations = $plugin_manager->createInstances([]);
 
   /** @var \Drupal\migrate\Plugin\Migration $migration */
-  foreach ($migrations as $migration) {
+  foreach ($migrations as $id => $migration) {
+    // Skip if requirements are not met.
+    try {
+      if ($migration->getSourcePlugin() instanceof RequirementsInterface) {
+        $migration->getSourcePlugin()->checkRequirements();
+      }
+    }
+    catch (RequirementsException $e) {
+      continue;
+    }
+
     /** @var \Drupal\migrate\Plugin\migrate\id_map\Sql $id_map */
     $id_map = $migration->getIdMap();
     if (!is_a($id_map, Sql::class)) {
