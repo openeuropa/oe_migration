@@ -203,16 +203,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     // The resulting value should be "draft" because that is the default plugin
     // configuration that matches with a status of 0.
     $this->assertEquals('draft', $statusDestination);
-  }
 
-  /**
-   * Test with a change in the default configuration.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
-   */
-  public function testWorkflowConfigAlter() {
     $this->configuration = [
       'workflow_config_name' => 'workflows.workflow.test',
       'published_state' => 'valid',
@@ -222,6 +213,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     $this->initializePlugin();
 
     $value = 'published';
+    $this->row->setSourceProperty('status', 1);
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The result should be 'valid' because is configured as published state.
