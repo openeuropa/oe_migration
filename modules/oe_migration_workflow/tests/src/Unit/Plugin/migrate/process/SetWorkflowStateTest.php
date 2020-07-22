@@ -170,13 +170,20 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
     $value = 'published';
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
-    $this->assertEquals($statusDestination, $value);
+
+    // The resulting value should be "published" because that is the default
+    // plugin configuration that matches with a status of 1 (the default
+    // status).
+    $this->assertEquals('published', $statusDestination);
 
     $value = 'draft';
     $this->row->setSourceProperty('status', 0);
     $this->row->setSourceProperty('name', $value);
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
-    $this->assertEquals($statusDestination, $value);
+
+    // The resulting value should be "draft" because that is the default plugin
+    // configuration that matches with a status of 0.
+    $this->assertEquals('draft', $statusDestination);
   }
 
   /**
@@ -192,12 +199,19 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     $value = 'invalid_and_published';
     $this->row->setSourceProperty('name', $value);
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+
+    // The resulting value should be "published" because that is the default
+    // plugin configuration that matches with a status of 1 (the default
+    // status).
     $this->assertEquals('published', $statusDestination);
 
     $value = 'invalid_and_draft';
     $this->row->setSourceProperty('name', $value);
     $this->row->setSourceProperty('status', 0);
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+
+    // The resulting value should be "draft" because that is the default plugin
+    // configuration that matches with a status of 0.
     $this->assertEquals('draft', $statusDestination);
   }
 
@@ -219,7 +233,9 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
     $value = 'published';
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
-    $this->assertEquals($statusDestination, $this->configuration['published_state']);
+
+    // The result should be 'valid' because is configured as published state.
+    $this->assertEquals('valid', $statusDestination);
   }
 
   /**
