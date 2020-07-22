@@ -165,7 +165,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Exception
    */
-  public function testTransform() {
+  public function testTransformDefault() {
     $this->initializePlugin();
 
     $value = 'published';
@@ -184,25 +184,15 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     // The resulting value should be "draft" because that is the default plugin
     // configuration that matches with a status of 0.
     $this->assertEquals('draft', $statusDestination);
-  }
-
-  /**
-   * Test that unrecognized workflow status are changed with a new valid status.
-   *
-   * @throws \Drupal\migrate\MigrateException
-   * @throws \Exception
-   */
-  public function testTransformNewWorkflowStatus() {
 
     $this->initializePlugin();
-
     $value = 'invalid_and_published';
+    $this->row->setSourceProperty('status', 1);
     $this->row->setSourceProperty('name', $value);
     $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The resulting value should be "published" because that is the default
-    // plugin configuration that matches with a status of 1 (the default
-    // status).
+    // plugin configuration that matches with a status of 1.
     $this->assertEquals('published', $statusDestination);
 
     $value = 'invalid_and_draft';
