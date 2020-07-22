@@ -220,6 +220,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     $this->assertEquals('valid', $statusDestination);
   }
 
+
   /**
    * Tests some cases with invalid configuration.
    *
@@ -242,7 +243,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Test with an invalid workflwo name.
+   * Test with an invalid workflow name.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
