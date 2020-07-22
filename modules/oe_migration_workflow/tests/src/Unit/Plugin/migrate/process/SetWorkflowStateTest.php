@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\migrate\MigrateException;
 use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\migrate\Row;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
@@ -220,6 +221,24 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     $this->assertEquals('valid', $statusDestination);
   }
 
+  /**
+   * Test when the entity status doesn't match with the workflow state.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\migrate\MigrateException
+   */
+  public function testStatDoesntMatch() {
+    $value = 'published';
+
+    $this->initializePlugin();
+    $this->row->setSourceProperty('status', 0);
+
+    // This situation has to throw an exception.
+    $this->expectException(MigrateException::class);
+    $this->expectExceptionMessage('The entity status and the workflow state status don\'t match.');
+    $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+  }
 
   /**
    * Tests some cases with invalid configuration.
