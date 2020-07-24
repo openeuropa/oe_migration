@@ -266,6 +266,14 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       ],
       [
         [
+          'published_state' => '',
+          'workflow_config_name' => 'oe_corporate_workflow',
+          'status_field_name' => 1,
+        ],
+        'The "status_field_name" option must be a string. The given value is of type "integer".',
+      ],
+      [
+        [
           'unpublished_state' => '',
           'workflow_config_name' => 'oe_corporate_workflow',
         ],

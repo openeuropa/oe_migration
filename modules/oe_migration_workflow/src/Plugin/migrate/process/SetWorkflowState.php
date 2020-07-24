@@ -36,6 +36,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   - unpublished_state (mandatory): The destination workflow's unpublished
  *     state (string).
  *     Default value: "draft".
+ *   - status_field_name: The name of the status field.
+ *     Default value: "status".
  *
  * @codingStandardsIgnoreStart
  * Example with default configuration:
@@ -87,6 +89,7 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
     $this->configuration += [
       'published_state' => 'published',
       'unpublished_state' => 'draft',
+      'status_field_name' => 'status',
     ];
     $this->entityTypeManager = $entity_type_manager;
     // Check if the configuration is set correctly.
@@ -126,13 +129,14 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
     // if the status is set to "1", set it to the given "published_state", in
     // any other case, set it to the given "unpublished_state".
     $workflow = $this->getWorkflow($this->configuration['workflow_config_name']);
+    $status_field = $this->configuration['status_field_name'];
     if ($this->isValidWorkflowState($workflow, $value) === FALSE) {
-      $value = (int) $row->getSourceProperty('status') === 1 ? $this->configuration['published_state'] : $this->configuration['unpublished_state'];
+      $value = (int) $row->getSourceProperty($status_field) === 1 ? $this->configuration['published_state'] : $this->configuration['unpublished_state'];
     }
     // Check whether the entity status and the workflow state status match. If
     // it's not the case, throw a migration exception, otherwise proceed with
     // the operation.
-    if ((int) $row->getSourceProperty('status') !== (int) $workflow->get('type_settings')['states'][$value]['published']) {
+    if ((int) $row->getSourceProperty($status_field) !== (int) $workflow->get('type_settings')['states'][$value]['published']) {
       throw new MigrateException('The entity status and the workflow state status don\'t match.');
     }
 
@@ -148,8 +152,16 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
    *   Thrown if the storage handler couldn't be loaded.
    */
   public function validateConfigurationKeys(array $keys = NULL): void {
+
+    $options = [
+      'workflow_config_name',
+      'published_state',
+      'unpublished_state',
+      'status_field_name',
+    ];
+
     // Check if the configuration options are set and are strings.
-    foreach (['workflow_config_name', 'published_state', 'unpublished_state'] as $option) {
+    foreach ($options as $option) {
       if (!array_key_exists($option, $this->configuration) || !is_string($this->configuration[$option])) {
         /** @var string $message */
         $message = sprintf('The "%s" option must be a string. The given value is of type "%s".', $option, gettype(($this->configuration[$option])));
