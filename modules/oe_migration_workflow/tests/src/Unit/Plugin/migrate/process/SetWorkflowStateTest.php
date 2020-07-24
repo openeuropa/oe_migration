@@ -50,13 +50,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   protected $entityTypeManager;
 
   /**
-   * The ConfigManager mock object.
-   *
-   * @var \Drupal\Core\Config\ConfigManagerInterface
-   */
-  protected $configManager;
-
-  /**
    * Process plugin configuration.
    *
    * @var array
@@ -69,7 +62,9 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   public function setUp() {
     parent::setUp();
 
-    $this->configuration = [];
+    $this->configuration = [
+      'workflow_config_name' => 'oe_corporate_workflow',
+    ];
 
     $this->row = new Row(
       [
@@ -129,10 +124,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       );
 
     $configEntityTypeInterface = $this->createMock(ConfigEntityTypeInterface::class);
-    $configEntityTypeInterface->expects($this->any())
-      ->method('getConfigPrefix')
-      ->willReturn('workflows.workflow');
-
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->expects($this->any())
       ->method('load')
@@ -152,18 +143,11 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       ->method('getStorage')
       ->with('workflow')
       ->willReturn($storage);
-
-    $this->configManager = $this->createMock(ConfigManagerInterface::class);
-    $this->configManager->expects($this->any())
-      ->method('getEntityTypeIdByName')
-      ->with($this->logicalOr('workflows.workflow.oe_corporate_workflow', 'workflows.workflow.test'))
-      ->willReturn('workflow');
   }
 
   /**
    * Test de base case without any special configuration.
    *
-   * @throws \Drupal\migrate\MigrateException
    * @throws \Exception
    */
   public function testTransformDefault() {
@@ -206,7 +190,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     $this->assertEquals('draft', $statusDestination);
 
     $this->configuration = [
-      'workflow_config_name' => 'workflows.workflow.test',
+      'workflow_config_name' => 'test',
       'published_state' => 'valid',
       'unpublished_state' => 'invalid',
     ];
@@ -223,10 +207,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
   /**
    * Test when the entity status doesn't match with the workflow state.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public function testStatDoesntMatch() {
     $value = 'published';
@@ -249,10 +229,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    *   The message to check.
    *
    * @dataProvider invalidConfigurationProvider
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public function testInvalidArgumentConfiguration(array $config, $message) {
     $this->configuration = $config;
@@ -263,18 +239,9 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
   /**
    * Test with an invalid workflow name.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public function testInvalidWorkflowName() {
     $invalid_workflow_name = $this->getRandomGenerator()->string();
-    $this->configManager = $this->createMock(ConfigManagerInterface::class);
-    $this->configManager->expects($this->any())
-      ->method('getEntityTypeIdByName')
-      ->with($invalid_workflow_name)
-      ->willReturn(NULL);
 
     $this->configuration = ['workflow_config_name' => $invalid_workflow_name];
 
@@ -292,15 +259,24 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   public function invalidConfigurationProvider() {
     return [
       [
-        ['published_state' => new stdClass()],
+        [
+          'published_state' => new stdClass(),
+          'workflow_config_name' => 'oe_corporate_workflow'
+        ],
         'The "published_state" option must be a string. The given value is of type "object".',
       ],
       [
-        ['unpublished_state' => ''],
+        [
+          'unpublished_state' => '',
+          'workflow_config_name' => 'oe_corporate_workflow'
+        ],
         '"" is not a valid state of the "oe_corporate_workflow" workflow.',
       ],
       [
-        ['published_state' => ''],
+        [
+          'published_state' => '',
+          'workflow_config_name' => 'oe_corporate_workflow'
+        ],
         '"" is not a valid state of the "oe_corporate_workflow" workflow.',
       ],
     ];
@@ -308,17 +284,12 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
   /**
    * Create an instance of the process plugin.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   protected function initializePlugin() {
     $this->plugin = new SetWorkflowState(
       $this->configuration,
       $this->pluginId,
       [],
-      $this->configManager,
       $this->entityTypeManager
     );
   }

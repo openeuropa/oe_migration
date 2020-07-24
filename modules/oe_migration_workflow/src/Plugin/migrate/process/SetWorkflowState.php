@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\oe_migration_workflow\Plugin\migrate\process;
 
 use Drupal\Core\Config\ConfigManagerInterface;
-use Drupal\Core\Config\Entity\ConfigEntityStorage;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
@@ -54,7 +53,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   moderation_state:
  *    - plugin: oe_migration_set_workflow_state
  *      source: moderation_state
- *      workflow_config_name: workflows.workflow.oe_corporate_workflow
+ *      workflow_config_name: oe_corporate_workflow
  *      published_state: published
  *      unpublished_state: draft
  * @endcode
@@ -83,14 +82,13 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigManagerInterface $config_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     // The default configuration.
     $this->configuration += [
       'published_state' => 'published',
       'unpublished_state' => 'draft',
     ];
-    $this->configManager = $config_manager;
     $this->entityTypeManager = $entity_type_manager;
     // Check if the configuration is set correctly.
     $this->validateConfigurationKeys();
@@ -108,17 +106,12 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.manager'),
       $container->get('entity_type.manager')
     );
   }
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     // The expected value has to be a string but the source entity might not
@@ -200,19 +193,10 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
    *   Thrown if the storage handler couldn't be loaded.
    */
   protected function getWorkflow(string $config_name): ?WorkflowInterface {
-    /** @var string $entity_type_id */
-    $entity_type_id = $this->configManager->getEntityTypeIdByName($config_name);
-    if ($entity_type_id !== 'workflow') {
-      return NULL;
-    }
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $entity_type */
-    $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
-    /** @var string $entity_id */
-    $entity_id = ConfigEntityStorage::getIDFromConfigName($config_name, $entity_type->getConfigPrefix());
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $entities */
-    $entities = $this->entityTypeManager->getStorage($entity_type_id);
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $entity_storage */
+    $entity_storage = $this->entityTypeManager->getStorage('workflow');
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
-    $entity = $entities->load($entity_id);
+    $entity = $entity_storage->load($config_name);
 
     return $entity instanceof WorkflowInterface ? $entity : NULL;
   }
