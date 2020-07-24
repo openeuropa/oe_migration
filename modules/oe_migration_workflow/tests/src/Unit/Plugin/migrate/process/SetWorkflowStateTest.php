@@ -12,7 +12,6 @@ use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\migrate\Row;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 use Drupal\workflows\WorkflowInterface;
-use stdClass;
 
 /**
  * @coversDefaultClass \Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState
@@ -20,12 +19,6 @@ use stdClass;
  * @group oe_migration
  */
 class SetWorkflowStateTest extends MigrateProcessTestCase {
-  /**
-   * The ID of the plugin under test.
-   *
-   * @var string
-   */
-  protected $pluginId = 'oe_migration_workflow_set_workflow_state';
 
   /**
    * The instance of the plugin under test.
@@ -61,23 +54,19 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   public function setUp() {
     parent::setUp();
 
-    $this->configuration = [
-      'workflow_config_name' => 'oe_corporate_workflow',
-    ];
-
     $this->row = new Row(
       [
         'name' => 'published',
         'status' => 1,
       ],
       [
-        'status' => [
-          'type' => 'integer',
+        'name' => [
+          'type' => 'string',
           'unsigned' => FALSE,
           'alias' => 'st',
         ],
-        'name' => [
-          'type' => 'string',
+        'status' => [
+          'type' => 'integer',
           'unsigned' => FALSE,
           'alias' => 'st',
         ],
@@ -145,63 +134,64 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   }
 
   /**
-   * Test de base case without any special configuration.
+   * Test the base case without any special configuration.
    *
    * @throws \Exception
    */
   public function testTransformDefault() {
-    $this->initializePlugin();
+    $configuration = ['workflow_config_name' => 'oe_corporate_workflow'];
+    $this->initializePlugin($configuration);
 
     $value = 'published';
-    $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+    $status_destination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The resulting value should be "published" because that is the default
     // plugin configuration that matches with a status of 1 (the default
     // status).
-    $this->assertEquals('published', $statusDestination);
+    $this->assertEquals('published', $status_destination);
 
     $value = 'draft';
     $this->row->setSourceProperty('status', 0);
     $this->row->setSourceProperty('name', $value);
-    $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+    $status_destination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The resulting value should be "draft" because that is the default plugin
     // configuration that matches with a status of 0.
-    $this->assertEquals('draft', $statusDestination);
+    $this->assertEquals('draft', $status_destination);
 
-    $this->initializePlugin();
+    $this->initializePlugin($configuration);
     $value = 'invalid_and_published';
     $this->row->setSourceProperty('status', 1);
     $this->row->setSourceProperty('name', $value);
-    $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+    $status_destination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The resulting value should be "published" because that is the default
     // plugin configuration that matches with a status of 1.
-    $this->assertEquals('published', $statusDestination);
+    $this->assertEquals('published', $status_destination);
 
     $value = 'invalid_and_draft';
     $this->row->setSourceProperty('name', $value);
     $this->row->setSourceProperty('status', 0);
-    $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+    $status_destination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The resulting value should be "draft" because that is the default plugin
     // configuration that matches with a status of 0.
-    $this->assertEquals('draft', $statusDestination);
+    $this->assertEquals('draft', $status_destination);
 
-    $this->configuration = [
+    $configuration = [
       'workflow_config_name' => 'test',
       'published_state' => 'valid',
       'unpublished_state' => 'invalid',
     ];
 
-    $this->initializePlugin();
+    $this->initializePlugin($configuration);
 
     $value = 'published';
     $this->row->setSourceProperty('status', 1);
-    $statusDestination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
+    $status_destination = $this->plugin->transform($value, $this->migrateExecutable, $this->row, $this->destinationProperty);
 
     // The result should be 'valid' because is configured as published state.
-    $this->assertEquals('valid', $statusDestination);
+    $this->assertEquals('valid', $status_destination);
   }
 
   /**
@@ -210,7 +200,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   public function testStatDoesntMatch() {
     $value = 'published';
 
-    $this->initializePlugin();
+    $this->initializePlugin(['workflow_config_name' => 'oe_corporate_workflow']);
     $this->row->setSourceProperty('status', 0);
 
     // This situation has to throw an exception.
@@ -230,10 +220,9 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    * @dataProvider invalidConfigurationProvider
    */
   public function testInvalidArgumentConfiguration(array $config, $message) {
-    $this->configuration = $config;
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
-    $this->initializePlugin();
+    $this->initializePlugin($config);
   }
 
   /**
@@ -242,11 +231,11 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   public function testInvalidWorkflowName() {
     $invalid_workflow_name = $this->getRandomGenerator()->string();
 
-    $this->configuration = ['workflow_config_name' => $invalid_workflow_name];
+    $configuration = ['workflow_config_name' => $invalid_workflow_name];
 
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage(sprintf('"%s" is not a valid workflow.', $invalid_workflow_name));
-    $this->initializePlugin();
+    $this->initializePlugin($configuration);
   }
 
   /**
@@ -259,7 +248,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
     return [
       [
         [
-          'published_state' => new stdClass(),
+          'published_state' => new \stdClass(),
           'workflow_config_name' => 'oe_corporate_workflow',
         ],
         'The "published_state" option must be a string. The given value is of type "object".',
@@ -292,10 +281,10 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   /**
    * Create an instance of the process plugin.
    */
-  protected function initializePlugin() {
+  protected function initializePlugin($configuration) {
     $this->plugin = new SetWorkflowState(
-      $this->configuration,
-      $this->pluginId,
+      $configuration,
+      'oe_migration_set_workflow_state',
       [],
       $this->entityTypeManager
     );
