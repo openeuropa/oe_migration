@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration_workflow\Plugin\migrate\process;
 
-use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;

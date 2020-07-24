@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_migration_workflow\Unit\Plugin\migrate\process;
 
-use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -261,21 +260,21 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       [
         [
           'published_state' => new stdClass(),
-          'workflow_config_name' => 'oe_corporate_workflow'
+          'workflow_config_name' => 'oe_corporate_workflow',
         ],
         'The "published_state" option must be a string. The given value is of type "object".',
       ],
       [
         [
           'unpublished_state' => '',
-          'workflow_config_name' => 'oe_corporate_workflow'
+          'workflow_config_name' => 'oe_corporate_workflow',
         ],
         '"" is not a valid state of the "oe_corporate_workflow" workflow.',
       ],
       [
         [
           'published_state' => '',
-          'workflow_config_name' => 'oe_corporate_workflow'
+          'workflow_config_name' => 'oe_corporate_workflow',
         ],
         '"" is not a valid state of the "oe_corporate_workflow" workflow.',
       ],
