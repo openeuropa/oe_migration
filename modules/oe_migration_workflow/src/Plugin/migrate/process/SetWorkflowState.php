@@ -32,7 +32,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Available configuration keys:
  *   - workflow_config_name (mandatory): The destination workflow's
  *     configuration name (string).
- *     Default value: "workflows.workflow.oe_corporate_workflow".
  *   - published_state (mandatory): The destination workflow's published state
  *     (string).
  *     Default value: "published".
@@ -83,21 +82,11 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    ConfigManagerInterface $config_manager,
-    EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigManagerInterface $config_manager, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     // The default configuration.
     $this->configuration += [
-      'workflow_config_name' => 'workflows.workflow.oe_corporate_workflow',
       'published_state' => 'published',
       'unpublished_state' => 'draft',
     ];
