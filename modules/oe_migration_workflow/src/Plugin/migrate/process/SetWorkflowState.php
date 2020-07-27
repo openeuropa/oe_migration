@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration_workflow\Plugin\migrate\process;
 
-use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -83,7 +83,7 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigEntityStorageInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityStorageInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     // The default configuration.
     $this->configuration += [

@@ -271,13 +271,16 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
   /**
    * Create an instance of the process plugin.
+   *
+   * @param array $configuration
+   *   The configuration array.
    */
-  protected function initializePlugin($configuration) {
+  protected function initializePlugin(array $configuration) {
     $this->plugin = new SetWorkflowState(
       $configuration,
       'oe_migration_set_workflow_state',
       [],
-      $this->entityTypeManager
+      $this->entityTypeManager->getStorage('workflow')
     );
   }
 
