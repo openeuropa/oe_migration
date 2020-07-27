@@ -42,13 +42,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   protected $entityTypeManager;
 
   /**
-   * Process plugin configuration.
-   *
-   * @var array
-   */
-  protected $configuration;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
