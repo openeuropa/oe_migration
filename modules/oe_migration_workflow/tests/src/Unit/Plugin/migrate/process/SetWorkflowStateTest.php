@@ -135,8 +135,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
 
   /**
    * Test the base case without any special configuration.
-   *
-   * @throws \Exception
    */
   public function testTransformDefault() {
     $configuration = ['workflow_config_name' => 'oe_corporate_workflow'];

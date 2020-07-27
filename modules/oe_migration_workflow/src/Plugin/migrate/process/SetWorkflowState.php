@@ -98,10 +98,6 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
@@ -145,11 +141,6 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   *   Thrown if the entity type doesn't exist.
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   *   Thrown if the storage handler couldn't be loaded.
    */
   public function validateConfigurationKeys(array $keys = NULL): void {
 
@@ -197,11 +188,6 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
    *
    * @return \Drupal\workflows\WorkflowInterface|null
    *   A workflow entity object. NULL if no matching entity is found.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   *   Thrown if the entity type doesn't exist.
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   *   Thrown if the storage handler couldn't be loaded.
    */
   protected function getWorkflow(string $config_name): ?WorkflowInterface {
     /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $entity_storage */
