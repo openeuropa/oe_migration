@@ -6,7 +6,6 @@ namespace Drupal\Tests\oe_migration_workflow\Unit\Plugin\migrate\process;
 
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\migrate\Row;
@@ -35,11 +34,11 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   protected $destinationProperty = 'Destination test property';
 
   /**
-   * The EntityTypeManager mock object.
+   * A WorkflowStorage mock.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $entityTypeManager;
+  protected $workflowStorage;
 
   /**
    * {@inheritdoc}
@@ -105,8 +104,8 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       );
 
     $configEntityTypeInterface = $this->createMock(ConfigEntityTypeInterface::class);
-    $storage = $this->createMock(EntityStorageInterface::class);
-    $storage->expects($this->any())
+    $this->workflowStorage = $this->createMock(EntityStorageInterface::class);
+    $this->workflowStorage->expects($this->any())
       ->method('load')
       ->willReturnMap(
         [
@@ -114,16 +113,6 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
           ['test', $workflow_alternative],
         ]
       );
-
-    $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
-    $this->entityTypeManager->expects($this->any())
-      ->method('getDefinition')
-      ->with('workflow')
-      ->willReturn($configEntityTypeInterface);
-    $this->entityTypeManager->expects($this->any())
-      ->method('getStorage')
-      ->with('workflow')
-      ->willReturn($storage);
   }
 
   /**
@@ -280,7 +269,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
       $configuration,
       'oe_migration_set_workflow_state',
       [],
-      $this->entityTypeManager->getStorage('workflow')
+      $this->workflowStorage
     );
   }
 

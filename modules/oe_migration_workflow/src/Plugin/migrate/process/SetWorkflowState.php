@@ -76,7 +76,7 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
   /**
    * The workflow Storage manager.
    *
-   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
   protected $workflowStorage;
 
