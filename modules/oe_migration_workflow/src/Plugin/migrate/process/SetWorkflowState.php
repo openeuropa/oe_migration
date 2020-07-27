@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_migration_workflow\Plugin\migrate\process;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -74,16 +74,16 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
   protected $configManager;
 
   /**
-   * The entity type manager.
+   * The workflow Storage manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
-  protected $entityTypeManager;
+  protected $workflowStorage;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigEntityStorageInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     // The default configuration.
     $this->configuration += [
@@ -91,7 +91,7 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
       'unpublished_state' => 'draft',
       'status_field_name' => 'status',
     ];
-    $this->entityTypeManager = $entity_type_manager;
+    $this->workflowStorage = $entity_type_manager;
     // Check if the configuration is set correctly.
     $this->validateConfigurationKeys();
   }
@@ -104,7 +104,7 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager')->getStorage('workflow')
     );
   }
 
@@ -190,10 +190,8 @@ class SetWorkflowState extends ProcessPluginBase implements ContainerFactoryPlug
    *   A workflow entity object. NULL if no matching entity is found.
    */
   protected function getWorkflow(string $config_name): ?WorkflowInterface {
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $entity_storage */
-    $entity_storage = $this->entityTypeManager->getStorage('workflow');
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
-    $entity = $entity_storage->load($config_name);
+    $entity = $this->workflowStorage->load($config_name);
 
     return $entity instanceof WorkflowInterface ? $entity : NULL;
   }
