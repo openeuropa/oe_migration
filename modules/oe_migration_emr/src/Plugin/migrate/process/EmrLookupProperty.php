@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\dmt_migrate_emr\Plugin\migrate\process;
+namespace Drupal\oe_migration_emr\Plugin\migrate\process;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\dmt_migrate\ValidConfigurableMigrationPluginInterface;
+use Drupal\oe_migration\ValidConfigurableMigrationPluginInterface;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\ProcessPluginBase;
@@ -36,7 +36,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *    migration:
  *     - food_migrate_node_food_basic_page
  *     - food_migrate_node_food_highlight
- *  - plugin: dmt_migrate_emr_lookup_property
+ *  - plugin: oe_migration_emr_lookup_property
  *    entity_host_type: node
  *    entity_meta_bundle: ewcms_site_tree_item
  *    field: ewcms_sitetree_menu_item
@@ -44,7 +44,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @endcode
  *
  * @MigrateProcessPlugin(
- *   id = "dmt_migrate_emr_lookup_property"
+ *   id = "oe_migration_emr_lookup_property"
  * )
  */
 class EmrLookupProperty extends ProcessPluginBase implements ContainerFactoryPluginInterface, ValidConfigurableMigrationPluginInterface {
@@ -58,10 +58,6 @@ class EmrLookupProperty extends ProcessPluginBase implements ContainerFactoryPlu
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\migrate\MigrateException
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -95,8 +91,6 @@ class EmrLookupProperty extends ProcessPluginBase implements ContainerFactoryPlu
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\migrate\MigrateSkipRowException
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     // Null values throw exception when you try to load.
@@ -113,7 +107,6 @@ class EmrLookupProperty extends ProcessPluginBase implements ContainerFactoryPlu
       throw new MigrateSkipRowException(sprintf('The node %s does not exist in the destination.', $value));
     }
 
-    // Get the property.
     if (!$host_entity->hasField('emr_entity_metas')) {
       throw new MigrateSkipRowException(sprintf('The node %s does not have a emr_entity_metas field.', $value));
     }
