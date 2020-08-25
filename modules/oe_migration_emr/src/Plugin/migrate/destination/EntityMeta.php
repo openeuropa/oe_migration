@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\dmt_migrate_emr\Plugin\migrate\destination;
+namespace Drupal\oe_migration_emr\Plugin\migrate\destination;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
-use Drupal\dmt_migrate\ValidConfigurableMigrationPluginInterface;
+use Drupal\oe_migration\ValidConfigurableMigrationPluginInterface;
 use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -49,9 +49,6 @@ class EntityMeta extends EntityContentBase implements ValidConfigurableMigration
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Drupal\migrate\MigrateException
-   * @throws \InvalidArgumentException
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, EntityStorageInterface $storage, array $bundles, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $storage, $bundles, $entity_field_manager, $field_type_manager);
@@ -95,8 +92,6 @@ class EntityMeta extends EntityContentBase implements ValidConfigurableMigration
    *
    * @return mixed
    *   The updated host entity.
-   *
-   * @throws \Drupal\migrate\MigrateSkipRowException
    */
   protected function updateMetaEntity(EntityInterface $entity, Row $row) {
     /** @var \Drupal\emr\Field\EntityMetaItemListInterface $entity_meta_list */
@@ -135,7 +130,7 @@ class EntityMeta extends EntityContentBase implements ValidConfigurableMigration
    * The Entity Meta is managed directly with the host entity using the API, so
    * we need to manage the host entity.
    *
-   * @todo Expands for all entity types. As a static function it isn't easy.
+   * @todo Expands for all entity types (although maybe it isn't possible).
    */
   protected static function getEntityTypeId($plugin_id) {
     return 'node';
