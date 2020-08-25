@@ -140,7 +140,7 @@ class EmrLookupProperty extends ProcessPluginBase implements ContainerFactoryPlu
    */
   public function validateConfigurationKeys(array $keys = NULL): void {
     foreach ($keys as $value) {
-      if (!isset($this->configuration[$value]) || empty($this->configuration[$value] || !is_string($this->configuration[$value]))) {
+      if (!isset($this->configuration[$value]) || empty($this->configuration[$value]) || !is_string($this->configuration[$value])) {
         throw new \InvalidArgumentException(sprintf('The configuration option "%s" is mandatory and has to be a string.', $value));
       }
     }
