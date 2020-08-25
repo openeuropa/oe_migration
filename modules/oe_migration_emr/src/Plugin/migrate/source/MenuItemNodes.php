@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\dmt_migrate_emr\Plugin\migrate\source;
+namespace Drupal\oe_migration_emr\Plugin\migrate\source;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\dmt_migrate\ValidConfigurableMigrationPluginInterface;
+use Drupal\oe_migration\ValidConfigurableMigrationPluginInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
@@ -33,13 +33,13 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @code
  * source:
- *   plugin: dmt_migrate_entity_meta_relation_menu_item_nodes
+ *   plugin: oe_migration_emr_entity_meta_relation_menu_item_nodes
  *   menu_name: 'main-menu'
  *   track_changes: true
  * @endcode
  *
  * @MigrateSource(
- *   id = "dmt_migrate_emr_menu_item_nodes",
+ *   id = "oe_migration_emr_menu_item_nodes",
  *   source_module = "system"
  * )
  */
@@ -62,6 +62,13 @@ class MenuItemNodes extends DrupalSqlBase implements ValidConfigurableMigrationP
    * {@inheritdoc}
    */
   public function query() {
+    /*
+     * The order is explicitly declared of this way to maintain a correct
+     * hierarchy:
+     *  -> Ordered by levels (highest  items first)
+     *  -> Ordered by parent (to list all children of the same parent)
+     *  -> Ordered by the weigh to maintain the order in the level.
+     */
     $result = $this->select('menu_links', 'i');
     $result->leftJoin('menu_links', 'p', 'i.plid=p.mlid');
     $result->fields('i', ['mlid', 'plid', 'link_path', 'weight', 'depth']);
