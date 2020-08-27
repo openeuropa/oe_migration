@@ -72,7 +72,7 @@ class EntityMeta extends EntityContentBase implements ValidConfigurableMigration
    * @return \Drupal\Core\Entity\EntityInterface
    *   The entity we are importing into.
    */
-  protected function getEntity(Row $row, array $old_destination_id_values) {
+  public function getEntity(Row $row, array $old_destination_id_values) {
     $entity = NULL;
     $destination_property_value = $row->getDestinationProperty($this->configuration['destination_property']);
     if (!empty($destination_property_value) > 0 && $entity = $this->storage->load($destination_property_value)) {
