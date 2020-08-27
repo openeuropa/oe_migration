@@ -14,6 +14,12 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
   * **[Process plugin] SetWorkflowState (oe_migration_set_workflow_state)** : Sets the workflow state of an entity.
 
     **Dependencies:** [Workflows](https://www.drupal.org/docs/8/core/modules/workflows)
+* #### OpenEuropa Entity Meta Relation
+  * **[Source Plugin] MenuItemNodes (oe_migration_emr_menu_item_nodes)** : Select menu items related to D7 nodes.
+  * **[Process Plugin] EmrLookupProperty (oe_migration_emr_lookup_property)** : Get a field from a related Meta Entity.
+  * **[Destination plugin] EntityMeta (entity:entity_meta)** : Provides entity meta destination plugin to update existing entities.
+
+    **Dependencies:** [entity_meta_relation](https://www.drupal.org/project/entity_meta_relation)
 
 ## Development setup
 
