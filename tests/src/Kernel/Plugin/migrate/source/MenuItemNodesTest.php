@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\oe_migration_emr\Kernel\Plugin\migrate\source;
+namespace Drupal\Tests\oe_migration\Kernel\Plugin\migrate\source;
 
 use Drupal\Tests\migrate\Kernel\MigrateSqlSourceTestBase;
 
 /**
- * @covers \Drupal\oe_migration_emr\Plugin\migrate\source\MenuItemNodes
+ * @covers \Drupal\oe_migration\Plugin\migrate\source\MenuItemNodes
  *
  * @group dmt_migrate
  */
@@ -146,7 +146,6 @@ class MenuItemNodesTest extends MigrateSqlSourceTestBase {
   public static $modules = [
     'path',
     'oe_migration',
-    'oe_migration_emr',
     'migrate',
     'migrate_drupal',
   ];

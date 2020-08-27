@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_migration_emr\Plugin\migrate\source;
+namespace Drupal\oe_migration\Plugin\migrate\source;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\State\StateInterface;
@@ -33,13 +33,13 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *
  * @code
  * source:
- *   plugin: oe_migration_emr_entity_meta_relation_menu_item_nodes
+ *   plugin: oe_migration_menu_item_nodes
  *   menu_name: 'main-menu'
  *   track_changes: true
  * @endcode
  *
  * @MigrateSource(
- *   id = "oe_migration_emr_menu_item_nodes",
+ *   id = "oe_migration_menu_item_nodes",
  *   source_module = "system"
  * )
  */
