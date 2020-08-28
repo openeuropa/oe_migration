@@ -151,7 +151,7 @@ class MenuItemNodesTest extends MigrateSqlSourceTestBase {
   ];
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function providerSource() {
     $tests = [];
