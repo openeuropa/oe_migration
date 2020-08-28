@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_migration_views\Functional;
 
-use Drupal\Core\Site\Settings;
 use Drupal\Tests\BrowserTestBase;
 use Drush\TestTraits\DrushTestTrait;
 
@@ -53,23 +52,6 @@ class DrushCommandsTest extends BrowserTestBase {
     // Create the admin user.
     $this->adminUser = $this->drupalCreateUser(['access administration pages', 'view migrate reports']);
     $this->drupalLogin($this->adminUser);
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * Overrides \Drupal\Core\Test\FunctionalTestSetupTrait::prepareSettings
-   * to copy settings.override.php.
-   * Required for the "file_scan_ignore_directories" settings.
-   */
-  protected function prepareSettings() {
-    parent::prepareSettings();
-
-    $settings_override = DRUPAL_ROOT . '/' . $this->originalSite . '/settings.override.php';
-    if (file_exists($settings_override)) {
-      copy($settings_override, DRUPAL_ROOT . '/' . $this->siteDirectory . '/settings.override.php');
-      Settings::initialize(DRUPAL_ROOT, $this->siteDirectory, $this->classLoader);
-    }
   }
 
   /**
