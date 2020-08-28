@@ -78,6 +78,8 @@ class EntityMetaTest extends KernelTestBase {
 
   /**
    * Test when the field exists and is created properly.
+   *
+   * @requires module entity_reference_revisions
    */
   public function testGetEntity() {
     $old_destination_values = [];
