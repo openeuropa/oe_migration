@@ -7,6 +7,8 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
 * **ApplyFilters (oe_migration_apply_filters)** : Applies filters of the given filter format to a string.
 * **Pipeline (oe_migration_pipeline)** : Executes a group of process plugins, stored in a `oe_migration_process_pipeline` configuration entity.
 
+### Source plugins
+  **MenuItemNodes (oe_migration_menu_item_nodes)** : Select menu items related to D7 nodes.
 
 ### Sub-modules
 
@@ -14,6 +16,11 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
   * **[Process plugin] SetWorkflowState (oe_migration_set_workflow_state)** : Sets the workflow state of an entity.
 
     **Dependencies:** [Workflows](https://www.drupal.org/docs/8/core/modules/workflows)
+* #### OpenEuropa Entity Meta Relation
+  * **[Process Plugin] EmrLookupProperty (oe_migration_emr_lookup_property)** : Get a field from a related Meta Entity.
+  * **[Destination plugin] EntityMeta (entity:entity_meta)** : Provides entity meta destination plugin to update existing entities.
+
+    **Dependencies:** [entity_meta_relation](https://www.drupal.org/project/entity_meta_relation)
 
 ## Development setup
 

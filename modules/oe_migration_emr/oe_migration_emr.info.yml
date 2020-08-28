@@ -1,0 +1,11 @@
+name: DMT Migrate Entity Meta Relation
+description: Provide tools to migrate Entity Meta Relation entities.
+package: Migration
+type: module
+core: 8.x
+php: 7.1
+dependencies:
+  - entity_meta_relation:emr
+  - emr_node:emr_node
+  - oe_migration:oe_migration
+  - entity_reference_revisions:entity_reference_revisions
