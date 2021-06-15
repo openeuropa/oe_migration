@@ -1,0 +1,6 @@
+services:
+  oe_migration_views.route_subscriber:
+    class: Drupal\oe_migration_views\Routing\RouteSubscriber
+    arguments: []
+    tags:
+      - { name: event_subscriber }

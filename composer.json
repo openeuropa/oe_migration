@@ -14,7 +14,9 @@
         "drupal-composer/drupal-scaffold": "~2.2",
         "drupal/config_devel": "~1.2",
         "drupal/drupal-extension": "~4.0",
-        "drush/drush": "~9.0@stable",
+        "drupal/migrate_plus": "^5.0",
+        "drupal/migrate_tools": "^5.0",
+        "drush/drush": "^9.7.1 | ^10.0.0",
         "guzzlehttp/guzzle": "~6.3",
         "openeuropa/code-review": "~1.5",
         "openeuropa/drupal-core-require-dev": "^8.7",
@@ -50,6 +52,11 @@
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
             "build/modules/contrib/{$name}": ["type:drupal-module"],
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
+        },
+        "patches": {
+            "drupal/migrate_plus":{
+                "Allow overriding id map migrate plugin - https://www.drupal.org/project/migrate_plus/issues/2944627#comment-13519821" : "https://www.drupal.org/files/issues/2020-03-23/migrate_plus-override_idmap-5.x-2944627-23.patch"
+            }
         }
     },
     "config": {
