@@ -7,7 +7,7 @@ drupal:
   database:
     host: "mysql"
     port: "3306"
-    name: "oe_migration"
+    name: "drupal_module_template"
     user: "root"
     password: ""
   post_install:
@@ -20,7 +20,7 @@ drupal:
     - "./vendor/bin/drush config-set node.settings use_admin_theme 1 -y"
     # Enable the modules.
     - "./vendor/bin/drush en config_devel -y"
-    - "./vendor/bin/drush en oe_migration -y"
+    - "./vendor/bin/drush en drupal_module_template -y"
     - "./vendor/bin/drush cr"
   settings:
     settings:
@@ -32,7 +32,7 @@ drupal:
 
 commands:
   drupal:site-setup:
-    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_migration" }
+    - { task: "run", command: "drupal:symlink-project" }
     - { task: "run", command: "drupal:drush-setup" }
     - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
