@@ -10,13 +10,13 @@ clone:
 
 workspace:
   base: /test
-  path: drupal_module_template
+  path: oe_migration
 
 services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     environment:
-      - DOCUMENT_ROOT=/test/drupal_module_template
+      - DOCUMENT_ROOT=/test/oe_migration
   mysql:
     image: registry.fpfis.eu/fpfis/sql:percona-5.7
     command: --innodb-log-file-size=1G --max_allowed_packet=1G --innodb-buffer-pool-size=512M --wait_timeout=3000 --net_write_timeout=3000 --log_error_verbosity=3
