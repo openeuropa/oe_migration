@@ -8,8 +8,9 @@
     <env name="SIMPLETEST_DB" value="mysql://${drupal.database.user}:${drupal.database.password}@${drupal.database.host}:${drupal.database.port}/${drupal.database.name}"/>
   </php>
   <testsuites>
-    <testsuite name="Drupal module template tests">
+    <testsuite name="OpenEuropa Migration">
       <directory>./tests/</directory>
+      <directory>./modules/*/tests/</directory>
     </testsuite>
   </testsuites>
 </phpunit>
