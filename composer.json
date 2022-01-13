@@ -6,23 +6,22 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/core": "^8.7",
-        "php": ">=7.2"
+        "drupal/core": "^8.9 || ^9",
+        "php": ">=7.3"
     },
     "require-dev": {
         "composer/installers": "~1.5",
-        "drupal-composer/drupal-scaffold": "~2.2",
-        "drupal/config_devel": "~1.2",
+        "drupal/core-composer-scaffold": "^8.9 || ^9",
+        "drupal/config_devel": "^1.7",
         "drupal/drupal-extension": "~4.0",
-        "drush/drush": "~9.0@stable",
+        "drush/drush": "~10.3",
         "guzzlehttp/guzzle": "~6.3",
-        "openeuropa/code-review": "~1.5",
-        "openeuropa/drupal-core-require-dev": "^8.7",
-        "openeuropa/task-runner": "~1.0.0-beta5",
-        "phpunit/phpunit": "~6.0"
+        "openeuropa/code-review": "^1.7",
+        "openeuropa/drupal-core-require-dev": "^8.9 || ^9",
+        "openeuropa/task-runner-drupal-project-symlink": "^1.0",
+        "phpunit/phpunit": "^7 || ^8"
     },
     "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "post-install-cmd": "./vendor/bin/run drupal:site-setup",
         "post-update-cmd": "./vendor/bin/run drupal:site-setup"
     },
@@ -50,6 +49,11 @@
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
             "build/modules/contrib/{$name}": ["type:drupal-module"],
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
+        },
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "./build"
+            }
         }
     },
     "config": {
