@@ -2,7 +2,6 @@ name: OpenEuropa Migration
 description: Extensions to the core migration framework, to migrate data from Drupal 7 to the OpenEuropa project.
 package: OpenEuropa
 type: module
-core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
   - drupal:filter
