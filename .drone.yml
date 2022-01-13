@@ -10,13 +10,13 @@ clone:
 
 workspace:
   base: /test
-  path: oe_migration
+  path: drupal_module_template
 
 services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     environment:
-      - DOCUMENT_ROOT=/test/oe_migration
+      - DOCUMENT_ROOT=/test/drupal_module_template
   mysql:
     image: registry.fpfis.eu/fpfis/sql:percona-5.7
     command: --innodb-log-file-size=1G --max_allowed_packet=1G --innodb-buffer-pool-size=512M --wait_timeout=3000 --net_write_timeout=3000 --log_error_verbosity=3
@@ -62,6 +62,12 @@ pipeline:
     commands:
       - ./vendor/bin/phpunit
 
+  behat:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    commands:
+      - ./vendor/bin/behat --strict
+
   debug:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
@@ -74,5 +80,4 @@ matrix:
     - lowest
     - highest
   PHP_VERSION:
-    - 7.2
     - 7.3
