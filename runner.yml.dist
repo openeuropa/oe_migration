@@ -7,7 +7,7 @@ drupal:
   database:
     host: "mysql"
     port: "3306"
-    name: "drupal_module_template"
+    name: "oe_migration"
     user: "root"
     password: ""
   post_install:
@@ -20,7 +20,7 @@ drupal:
     - "./vendor/bin/drush config-set node.settings use_admin_theme 1 -y"
     # Enable the modules.
     - "./vendor/bin/drush en config_devel -y"
-    - "./vendor/bin/drush en drupal_module_template -y"
+    - "./vendor/bin/drush en oe_migration -y"
     - "./vendor/bin/drush cr"
   settings:
     settings:
