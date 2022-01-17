@@ -206,6 +206,19 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   }
 
   /**
+   * Test with an invalid workflow name.
+   */
+  public function testInvalidWorkflowName() {
+    $invalid_workflow_name = $this->getRandomGenerator()->string();
+
+    $configuration = ['workflow_config_name' => $invalid_workflow_name];
+
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage(sprintf('"%s" is not a valid workflow.', $invalid_workflow_name));
+    $this->initializePlugin($configuration);
+  }
+
+  /**
    * Data provider for the test testInvalidConfiguration().
    *
    * @return array
