@@ -287,7 +287,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
       $this->fail('Expected exception 1162011 not thrown');
     }
     catch (MigrateException $e) {
-      $this->assertContains('is not a string.', $e->getMessage());
+      $this->assertStringContainsString('is not a string.', $e->getMessage());
     }
   }
 

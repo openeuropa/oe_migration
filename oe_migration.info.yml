@@ -3,7 +3,7 @@ description: Extensions to the core migration framework, to migrate data from Dr
 package: OpenEuropa
 
 type: module
-core: 8.x
+core_version_requirement: ^8.9 || ^9.1
 dependencies:
   - drupal:filter
   - drupal:migrate

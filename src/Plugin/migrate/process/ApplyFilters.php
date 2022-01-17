@@ -189,7 +189,10 @@ class ApplyFilters extends ProcessPluginBase implements ContainerFactoryPluginIn
    */
   public function validateConfigurationKeys(array $keys = NULL): void {
     $this->validateConfigurationKeyFilterFormat('filter_format');
-    $this->validateConfigurationKeyFiltersAndFiltersToSkip(['filters_to_apply', 'filters_to_skip']);
+    $this->validateConfigurationKeyFiltersAndFiltersToSkip([
+      'filters_to_apply',
+      'filters_to_skip',
+    ]);
   }
 
   /**

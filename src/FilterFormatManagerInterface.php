@@ -10,6 +10,8 @@ use Drupal\filter\FilterPluginCollection;
 /**
  * Interface FilterFormatManagerInterface.
  *
+ * Provides filter format related methods.
+ *
  * @package Drupal\oe_migration
  */
 interface FilterFormatManagerInterface {
