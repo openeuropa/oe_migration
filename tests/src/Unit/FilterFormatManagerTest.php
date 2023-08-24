@@ -52,14 +52,14 @@ class FilterFormatManagerTest extends UnitTestCase {
    *
    * @var array
    */
-  protected $filters;
+  protected array $filters;
 
   /**
    * A valid list of allowed tags with the presence of the 'allowed' key.
    *
    * @var array[]
    */
-  protected $allowedTags = [
+  protected array $allowedTags = [
     'allowed' => [
       'allowed_tag_1' => [
         'attribute_1' => TRUE,
@@ -74,7 +74,7 @@ class FilterFormatManagerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Mock three Filters.
@@ -122,7 +122,6 @@ class FilterFormatManagerTest extends UnitTestCase {
     // Mock the FilterPluginCollection getIterator() method.
     $this->filterPluginCollection->expects($this->any())
       ->method('getIterator')
-      ->withConsecutive()
       ->willReturn(new \ArrayObject([
         $this->filters['filter_1'],
         $this->filters['filter_2'],
@@ -141,16 +140,16 @@ class FilterFormatManagerTest extends UnitTestCase {
   /**
    * Test the getFilterFormat method.
    *
-   * Create a valid and a non valid filter format ID and verify that:
+   * Create a valid and an invalid filter format ID and verify that:
    * - getting a valid filter format works.
-   * - getting NULL when trying to get a non valid filter format works.
+   * - getting NULL when trying to get an invalid filter format works.
    */
   public function testGetFilterFormat() {
     // Trying to get a valid filter format. The expected return value is a
     // FilterFormat object.
     $this->assertEquals($this->filterFormat, $this->filterFormatManager->getFilterFormat('valid_filter_id'));
 
-    // Trying to get a non valid filter format. The expected return value is
+    // Trying to get an invalid filter format. The expected return value is
     // NULL.
     $this->assertNull($this->filterFormatManager->getFilterFormat('invalid_filter_id'));
   }
@@ -181,7 +180,7 @@ class FilterFormatManagerTest extends UnitTestCase {
     // FilterPluginCollection. The expected return value is an empty array.
     $this->assertEmpty($this->filterFormatManager->getFilterIds($this->filterFormat));
 
-    // Try to get a list of valid filter format IDs from a non existing
+    // Try to get a list of valid filter format IDs from an unexisting
     // FilterPluginCollection. The expected return value is an empty array.
     $this->assertEmpty($this->filterFormatManager->getFilterIds($this->filterFormat));
   }
@@ -191,7 +190,7 @@ class FilterFormatManagerTest extends UnitTestCase {
    *
    * Create three filters and verify that:
    * - the validation of a valid filter ID works.
-   * - the non validation of a non valid filter ID works.
+   * - the non validation of an invalid filter ID works.
    */
   public function testIsFilterIdValid() {
     // Mock the FilterPluginCollection getInstanceIds().
@@ -202,7 +201,7 @@ class FilterFormatManagerTest extends UnitTestCase {
     // Test the validation of a filter ID. The expected return value is TRUE.
     $this->assertTrue($this->filterFormatManager->isFilterIdValid('filter_1', $this->filterFormat));
 
-    // Test the non validation of a non existing filter ID. The expected return
+    // Test the non validation of an unexisting filter ID. The expected return
     // value is FALSE.
     $this->assertFalse($this->filterFormatManager->isFilterIdValid('filter_1000', $this->filterFormat));
   }
@@ -313,10 +312,10 @@ class FilterFormatManagerTest extends UnitTestCase {
   /**
    * Test the getAllowedTags method.
    *
-   * Create a valid allowed tags list and a non valid allowed tags list and
+   * Create a valid allowed tags list and an invalid allowed tags list and
    * verify that:
    * - getting the allowed tags from a valid list works.
-   * - getting an empty array from a non valid list works.
+   * - getting an empty array from an invalid list works.
    * - getting an empty array from an empty list works.
    * - getting an empty array from NULL works.
    */
