@@ -28,7 +28,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $pluginId = 'oe_migration_apply_filters';
+  protected string $pluginId = 'oe_migration_apply_filters';
 
   /**
    * The instance of the plugin under test.
@@ -42,14 +42,14 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $destinationProperty = 'destination_property';
+  protected string $destinationProperty = 'destination_property';
 
   /**
    * Default values for the filter map.
    *
    * @var array
    */
-  protected $sourcePluginIds = [
+  protected array $sourcePluginIds = [
     'name' => [
       'type' => 'string',
       'max_length' => 128,
@@ -103,7 +103,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $valid_filter = new Row(['name' => 'valid_filter_id'], $this->sourcePluginIds, TRUE);
@@ -156,7 +156,6 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
     // Mock the FilterPluginCollection inherited getIterator() method.
     $this->filterPluginCollection->expects($this->any())
       ->method('getIterator')
-      ->withConsecutive()
       ->willReturn(new \ArrayObject([$this->filter]));
 
     // Mock a FilterFormat object.
@@ -299,7 +298,7 @@ class ApplyFiltersTest extends MigrateProcessTestCase {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  protected function initializePlugin(array $configuration) {
+  protected function initializePlugin(array $configuration): void {
     $this->plugin = new ApplyFilters(
       $configuration,
       $this->pluginId,
