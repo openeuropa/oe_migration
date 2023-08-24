@@ -27,7 +27,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $provider = $this->randomMachineName();
     $this->entityType = $this->createMock(EntityTypeInterface::class);
