@@ -7,8 +7,8 @@ namespace Drupal\Tests\oe_migration_workflow\Unit\Plugin\migrate\process;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\migrate\MigrateException;
-use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\migrate\Row;
+use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 use Drupal\workflows\WorkflowInterface;
 

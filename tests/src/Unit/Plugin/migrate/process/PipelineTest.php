@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_migration\Unit\Plugin\migrate\process;
 
-use Drupal\oe_migration\Entity\MigrationProcessPipelineInterface;
-use Drupal\migrate\MigrateException;
-use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
-use Drupal\oe_migration\Plugin\migrate\process\Pipeline;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\migrate\MigrateException;
+use Drupal\oe_migration\Entity\MigrationProcessPipelineInterface;
+use Drupal\oe_migration\Plugin\migrate\process\Pipeline;
+use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 
 /**
  * @coversDefaultClass \Drupal\oe_migration\Plugin\migrate\process\Pipeline

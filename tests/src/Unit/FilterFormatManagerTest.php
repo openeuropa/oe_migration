@@ -7,9 +7,9 @@ namespace Drupal\Tests\oe_migration\Unit;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\filter\FilterFormatInterface;
-use Drupal\oe_migration\FilterFormatManager;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\Plugin\FilterInterface;
+use Drupal\oe_migration\FilterFormatManager;
 use Drupal\Tests\UnitTestCase;
 
 /**
