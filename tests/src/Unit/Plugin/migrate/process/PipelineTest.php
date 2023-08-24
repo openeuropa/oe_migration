@@ -23,7 +23,7 @@ class PipelineTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $pluginId = 'oe_migration_pipeline';
+  protected string $pluginId = 'oe_migration_pipeline';
 
   /**
    * A MigrationProcessPipelineInterface mock.
@@ -37,21 +37,21 @@ class PipelineTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $validId;
+  protected string $validId;
 
   /**
    * An invalid process plugin id.
    *
    * @var string
    */
-  protected $invalidId;
+  protected string $invalidId;
 
   /**
    * Destination property, only to show errors.
    *
    * @var string
    */
-  protected $destinationProperty = 'destination_property';
+  protected string $destinationProperty = 'destination_property';
 
   /**
    * A entity Manager Mock.
@@ -70,7 +70,7 @@ class PipelineTest extends MigrateProcessTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->migrationProcessPipeline = $this->createMock(MigrationProcessPipelineInterface::class);
