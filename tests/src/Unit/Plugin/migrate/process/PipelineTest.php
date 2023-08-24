@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_migration\Unit\Plugin\migrate\process;
 
-use Drupal\oe_migration\Entity\MigrationProcessPipelineInterface;
-use Drupal\migrate\MigrateException;
-use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
-use Drupal\oe_migration\Plugin\migrate\process\Pipeline;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\migrate\MigrateException;
+use Drupal\oe_migration\Entity\MigrationProcessPipelineInterface;
+use Drupal\oe_migration\Plugin\migrate\process\Pipeline;
+use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 
 /**
  * @coversDefaultClass \Drupal\oe_migration\Plugin\migrate\process\Pipeline
@@ -23,7 +23,7 @@ class PipelineTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $pluginId = 'oe_migration_pipeline';
+  protected string $pluginId = 'oe_migration_pipeline';
 
   /**
    * A MigrationProcessPipelineInterface mock.
@@ -37,21 +37,21 @@ class PipelineTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $validId;
+  protected string $validId;
 
   /**
    * An invalid process plugin id.
    *
    * @var string
    */
-  protected $invalidId;
+  protected string $invalidId;
 
   /**
    * Destination property, only to show errors.
    *
    * @var string
    */
-  protected $destinationProperty = 'destination_property';
+  protected string $destinationProperty = 'destination_property';
 
   /**
    * A entity Manager Mock.
@@ -70,7 +70,7 @@ class PipelineTest extends MigrateProcessTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->migrationProcessPipeline = $this->createMock(MigrationProcessPipelineInterface::class);

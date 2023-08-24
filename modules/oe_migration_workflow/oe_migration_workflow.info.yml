@@ -2,7 +2,7 @@ name: OpenEuropa Migration Workflow
 type: module
 description: Extensions to the migrate framework, related to the workflow state of an entity.
 package: OpenEuropa
-core_version_requirement: ^9.2
+core_version_requirement: ^9.4 || ^10
 
 dependencies:
   - oe_migration:oe_migration

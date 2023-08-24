@@ -1,8 +1,0 @@
-<?php
-
-/**
- * @file
- * OpenEuropa Migration module.
- */
-
-declare(strict_types = 1);

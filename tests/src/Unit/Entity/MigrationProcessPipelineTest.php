@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_migration\Unit\Entity;
 
-use Drupal\Tests\UnitTestCase;
-use Drupal\oe_migration\Entity\MigrationProcessPipeline;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\oe_migration\Entity\MigrationProcessPipeline;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\oe_migration\Entity\MigrationProcessPipeline
@@ -27,7 +27,7 @@ class MigrationProcessPipelineTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $provider = $this->randomMachineName();
     $this->entityType = $this->createMock(EntityTypeInterface::class);

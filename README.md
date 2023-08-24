@@ -1,6 +1,36 @@
-# OpenEuropa Migration
+OpenEuropa Migration
+=====================
+
+[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_migration/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_migration)
 
 The OpenEuropa Migration provides extensions to the core migration framework, to migrate data from Drupal 7 to the OpenEuropa project.
+
+**Table of contents:**
+
+- [Installation](#installation)
+- [Development setup](#development-setup)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+
+## Installation
+
+The recommended way of installing the OpenEuropa Migration module is via [Composer][1].
+
+```bash
+composer require openeuropa/oe_migration
+```
+
+### Enable the module
+
+In order to enable the module in your project run:
+
+```bash
+./vendor/bin/drush en oe_migration
+```
+
+## OpenEuropa Migration
+
+The module provides the following plugins and sub-modules:
 
 ### Process plugins
 
@@ -17,17 +47,16 @@ The OpenEuropa Migration provides extensions to the core migration framework, to
 
 ## Development setup
 
-You can build the development site by running the following steps:
+You can build a test site by running the following steps.
 
-* Install the Composer dependencies:
+* Install all the composer dependencies:
 
 ```bash
 composer install
 ```
 
-A post command hook (`drupal:site-setup`) is triggered automatically after `composer install`.
-It will make sure that the necessary symlinks are properly setup in the development site.
-It will also perform token substitution in development configuration files such as `behat.yml.dist`.
+* Customize build settings by copying `runner.yml.dist` to `runner.yml` and
+  changing relevant values.
 
 * Install test site by running:
 
@@ -35,7 +64,19 @@ It will also perform token substitution in development configuration files such 
 ./vendor/bin/run drupal:site-install
 ```
 
-The development site web root should be available in the `build` directory.
+Your test site will be available at `./build`.
+
+**Please note:** project files and directories are symlinked within the test site by using the
+[OpenEuropa Task Runner's Drupal project symlink](https://github.com/openeuropa/task-runner-drupal-project-symlink) command.
+
+If you add a new file or directory in the root of the project, you need to re-run `drupal:site-setup` in order to make
+sure they are be correctly symlinked.
+
+If you don't want to re-run a full site setup for that, you can simply run:
+
+```
+$ ./vendor/bin/run drupal:symlink-project
+```
 
 ### Using Docker Compose
 
@@ -85,46 +126,6 @@ docker-compose exec web ./vendor/bin/run drupal:site-install
 Using default configuration, the development site files should be available in the `build` directory and the development site
 should be available at: [http://127.0.0.1:8080/build](http://127.0.0.1:8080/build).
 
-##### How to use the Pipelines plugin
-The process plugin Pipeline executes a process pipeline loaded from configuration.
-
-This configuration entity can be created in the database of different ways, provided by the Drupal Core modules:
-- Using the command `drush config:import` with the `--partial` option (`drush config:import --partial --source/path/to/the/folder/`).
-- Using the UI provided by the module Configuration Manager to import single files (or going directly to the path `/admin/config/development/configuration/single/import_en`)
-- Setting a correct yaml file into a /config/install directory inside a custom module.
-
-This is an example of a `oe_migration.oe_migration_process_pipeline` config entity in a yaml format, ready to be imported:
-
-```
-  id: my_process_pipeline
-  label: 'My process pipeline'
-  description: 'Process pipeline for processing fulltext fields'
-  process:
-    -
-      plugin: dom
-      method: import
-    -
-      plugin: dom_str_replace
-      mode: attribute
-      xpath: '//a'
-      attribute_options:
-        name: href
-      search: 'foo'
-      replace: 'bar'
-    -
-      plugin: dom_str_replace
-      mode: attribute
-      xpath: '//a'
-      attribute_options:
-        name: href
-      regex: true
-      search: '/foo/'
-      replace: TOKEN1
-    -
-      plugin: dom
-      method: export
-```
-
 #### Running the tests
 
 To run the grumphp checks:
@@ -137,12 +138,6 @@ To run the phpunit tests:
 
 ```bash
 docker-compose exec web ./vendor/bin/phpunit
-```
-
-To run the behat tests:
-
-```bash
-docker-compose exec web ./vendor/bin/behat
 ```
 
 #### Step debugging
@@ -168,3 +163,5 @@ Please read [the full documentation](https://github.com/openeuropa/openeuropa) f
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the available versions, see the [tags on this repository](https://github.com/openeuropa/oe_migration/tags).
+
+[1]: https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies#managing-contributed

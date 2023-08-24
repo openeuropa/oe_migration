@@ -7,8 +7,8 @@ namespace Drupal\Tests\oe_migration_workflow\Unit\Plugin\migrate\process;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\migrate\MigrateException;
-use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\migrate\Row;
+use Drupal\oe_migration_workflow\Plugin\migrate\process\SetWorkflowState;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 use Drupal\workflows\WorkflowInterface;
 
@@ -31,7 +31,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    *
    * @var string
    */
-  protected $destinationProperty = 'Destination test property';
+  protected string $destinationProperty = 'Destination test property';
 
   /**
    * A WorkflowStorage mock.
@@ -43,7 +43,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->row = new Row(
@@ -224,7 +224,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    * @return array
    *   The data to tests.
    */
-  public function invalidConfigurationProvider() {
+  public function invalidConfigurationProvider(): array {
     return [
       [
         [
@@ -264,7 +264,7 @@ class SetWorkflowStateTest extends MigrateProcessTestCase {
    * @param array $configuration
    *   The configuration array.
    */
-  protected function initializePlugin(array $configuration) {
+  protected function initializePlugin(array $configuration): void {
     $this->plugin = new SetWorkflowState(
       $configuration,
       'oe_migration_set_workflow_state',
